@@ -9,7 +9,6 @@ RUN chmod +x *.sh
 
 RUN ./install_packages.sh
 RUN ./enable_php_ext.sh
-RUN ./blackfire.sh
 
 RUN rm -Rf /custom-setup
 

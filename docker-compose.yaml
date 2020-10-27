@@ -37,7 +37,7 @@ services:
       - ./:/www/api
       - ./docker/php/conf/www.conf:/usr/local/etc/php-fpm.d/www.conf
     ports:
-      - "9050:9000"
+      - "9051:9000"
     depends_on:
       - psql.test
     networks:
