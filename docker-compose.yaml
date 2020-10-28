@@ -43,21 +43,6 @@ services:
     networks:
       - saf_api
 
-  pgadmin:
-    container_name: saf_pgadmin
-    image: dpage/pgadmin4
-    ports:
-      - "5050:80"
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=user@domain.com
-      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
-    volumes:
-      - ./.pgadmin:/var/lib/pgadmin
-    depends_on:
-      - psql.test
-    networks:
-      - saf_api
-
   web:
     container_name: saf_nginx
     image: library/nginx:1.19.1
