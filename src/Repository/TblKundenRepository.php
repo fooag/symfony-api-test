@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Adresse;
+use App\Entity\KundeAdresse;
 use App\Entity\TblKunden;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +20,18 @@ class TblKundenRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TblKunden::class);
+    }
+
+    public function findKundeAdresse($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :val')
+            ->setParameter('val', $value)
+            ->leftJoin(KundeAdresse::class, 'kd', Join::WITH, 't.id = kd.kunde_id')
+            //->leftJoin(Adresse::class, 'a', Join::WITH, 'a.adresse_id = kd.adresse_id')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     // /**

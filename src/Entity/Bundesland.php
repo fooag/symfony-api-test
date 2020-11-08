@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(shortName="states")
  * @ORM\Entity(repositoryClass=BundeslandRepository::class)
  */
 class Bundesland

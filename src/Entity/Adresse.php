@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *  shortName="adressen"
+ *     shortName="addresses"
  * )
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
  * @ORM\Table(schema="std")

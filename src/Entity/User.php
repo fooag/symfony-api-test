@@ -5,16 +5,19 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  *     normalizationContext={
- *       "groups"={"list"}
+ *       "groups"={"user:list"}
  *     }
  * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(schema="sec")
+ * @UniqueEntity("email")
  */
 class User
 {
@@ -27,12 +30,19 @@ class User
 
     /**
      * @ORM\Column(type="string", length=200)
-     * @Groups({"list"})
+     * @Groups({"user:list", "kunden"})
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     message="Das Passwort muss mindestens 8 Zeichen lang sein und Groß/Kleinbuchstaben sowie mind eine Zahl und ein Sonderzeichen enthalten",
+     *     pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,}/"
+     * )
      */
     private $passwd;
 
@@ -44,13 +54,13 @@ class User
 
     /**
      * @ORM\Column(type="integer", options={"default":1})
-     * @Groups({"list"})
+     * @Groups({"user:list", "kunden"})
      */
     private $aktiv;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"list"})
+     * @Groups({"user:list", "kunden"})
      */
     private $last_login;
 
@@ -112,7 +122,7 @@ class User
         return $this->kundenId;
     }
 
-    public function setKundenId(int $kundenId): self
+    public function setKundenId(?TblKunden $kundenId): self
     {
         $this->kundenId = $kundenId;
 

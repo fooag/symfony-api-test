@@ -7,7 +7,6 @@ use App\Repository\KundeAdresseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=KundeAdresseRepository::class)
  * @ORM\Table(schema="std")
  */

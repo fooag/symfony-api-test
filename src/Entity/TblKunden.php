@@ -2,15 +2,31 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TblKundenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\TblKundenController;
 
 /**
  * @ApiResource(
- *     shortName="kunden",
+ *     shortName="clients",
+ *     normalizationContext={"groups"={"kunden"}},
+ *     itemOperations={
+ *         "get_kunde_adresse"={
+ *             "method"="GET",
+ *             "path"="/clients/{id}/adressen",
+ *             "controller"=TblKundenController::class
+ *         }
+ *     }
+ * )
+ * @ApiFilter(
+ *     NumericFilter::class, properties={"geloescht"}
  * )
  * @ORM\Entity(repositoryClass=TblKundenRepository::class)
  * @ORM\Table(schema="std")
@@ -21,16 +37,19 @@ class TblKunden
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="string", length=36)
+     * @Groups({"kunden"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"kunden"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"kunden"})
      */
     private $vorname;
 
@@ -41,6 +60,7 @@ class TblKunden
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"kunden"})
      */
     private $geburtsdatum;
 
@@ -51,22 +71,27 @@ class TblKunden
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"kunden"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"kunden"})
      */
     private $geschlecht;
 
     /**
      * @ORM\ManyToOne(targetEntity="Vermittler", inversedBy="tblKunden")
      * @ORM\JoinColumn(nullable=false, name="vermittler_id", referencedColumnName="id")
+     * @Groups({"kunden"})
      */
     private $vermittlerId;
 
     /**
+     * @ApiSubresource()
      * @ORM\OneToMany(targetEntity="User", mappedBy="kundenId", orphanRemoval=true)
+     * @Groups({"kunden"})
      */
     private $users;
 

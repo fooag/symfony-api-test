@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VermittlerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=VermittlerRepository::class)
  * @ORM\Table(schema="std")
  */
@@ -19,6 +18,7 @@ class Vermittler
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"kunden"})
      */
     private $id;
 
@@ -135,6 +135,6 @@ class Vermittler
 
     public function getVermittlerUsers(): Collection
     {
-        return $this->vermittlerUsers;
+        return $this->vermittlerUsers->get('id');
     }
 }
