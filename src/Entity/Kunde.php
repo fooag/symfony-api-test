@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="std.tbl_kunden")
@@ -45,6 +46,8 @@ class Kunde
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -52,6 +55,8 @@ class Kunde
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank()
      */
     private $vorname;
 
@@ -66,6 +71,8 @@ class Kunde
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotBlank()
      */
     private $geburtsdatum;
 
@@ -87,6 +94,9 @@ class Kunde
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 

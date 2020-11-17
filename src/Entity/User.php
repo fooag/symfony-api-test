@@ -5,6 +5,12 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
+// TODO: use groups to normalize/denormalize to hide password
+// *     normalizationContext={"groups"={"read"}},
+// *     denormalizationContext={"groups"={"write"}},
 
 /**
  * @ORM\Table(name="sec.user")
@@ -38,6 +44,8 @@ class User
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups({"read"})
      */
     private $id;
 
@@ -45,6 +53,11 @@ class User
      * @var string
      *
      * @ORM\Column(type="string", length=200)
+     *
+     * @Groups({"read", "write"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
@@ -52,21 +65,19 @@ class User
      * @var string
      *
      * @ORM\Column(type="string", length=60)
+     *
+     * @Groups({"write"})
+     *
+     * @Assert\NotBlank()
      */
     private $passwd;
-
-//    /**
-//     * @var Kunde
-//     *
-//     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Kunde", inversedBy="user")
-//     */
-//    private $kunde;
-    //TODO
 
     /**
      * @var int
      *
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"read", "write"})
      */
     private $aktiv;
 
@@ -74,6 +85,8 @@ class User
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"read", "write"})
      */
     private $lastLogin;
 

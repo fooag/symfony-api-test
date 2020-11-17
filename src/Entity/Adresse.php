@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="std.adresse")
@@ -45,6 +46,8 @@ class Adresse
      * @var string
      *
      * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank()
      */
     private $strasse;
 
@@ -52,6 +55,8 @@ class Adresse
      * @var string|null
      *
      * @ORM\Column(type="string", length=10, nullable=true)
+     *
+     * @Assert\NotBlank()
      */
     private $plz;
 
@@ -59,6 +64,8 @@ class Adresse
      * @var string
      *
      * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank()
      */
     private $ort;
 
