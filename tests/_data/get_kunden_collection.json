@@ -1,0 +1,43 @@
+{
+  "@context": "\/foo\/contexts\/Kunde",
+  "@id": "\/foo\/kunden",
+  "@type": "hydra:Collection",
+  "hydra:member": [{
+    "@id": "\/foo\/kunden\/D5F449CE",
+    "@type": "Kunde",
+    "name": "Meier",
+    "vorname": "Bertram",
+    "firma": null,
+    "geburtsdatum": "1973-03-06T00:00:00+00:00",
+    "geschlecht": null,
+    "email": "mebe@example.org",
+    "user": {
+      "@id": "\/foo\/user\/1",
+      "@type": "KundeUser",
+      "email": "kari@example.com",
+      "aktiv": 1,
+      "lastLogin": "2021-03-05T10:59:46+00:00"
+    },
+    "vermittlerId": 1000,
+    "adressen": [{
+      "strasse": "Invalidenstr. 23",
+      "plz": "10115",
+      "ort": "Berlin",
+      "bundesland": "BE",
+      "details": {
+        "geschaeftlich": false,
+        "rechnungsadresse": true
+      }
+    }, {
+      "strasse": "Berliner Str. 12",
+      "plz": null,
+      "ort": "Zossen",
+      "bundesland": "BB",
+      "details": {
+        "geschaeftlich": true,
+        "rechnungsadresse": false
+      }
+    }]
+  }],
+  "hydra:totalItems": 1
+}
