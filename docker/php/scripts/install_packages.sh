@@ -23,3 +23,5 @@ apt-get install -y --no-install-recommends \
     zlib1g-dev
 
 rm -rf /var/lib/apt/lists/*
+
+wget -O composer.phar https://getcomposer.org/composer-1.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer
