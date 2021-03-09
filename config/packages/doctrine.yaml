@@ -1,6 +1,17 @@
 doctrine:
+    # tbd: multiple connections by privileges
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+
+        # register custom types
+        # cf. https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/types.html#custom-mapping-types
+        types:
+            geschlecht:
+                class: App\DBAL\Type\EnumGenderType
+                commented: false
+        ## or:
+#        mapping_types:
+#            geschlecht: string
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
