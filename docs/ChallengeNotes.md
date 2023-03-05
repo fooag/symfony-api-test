@@ -7,3 +7,4 @@ Start: 11:00
 3) PHPstan und PHPcs
    - einige phpstan rulset erstellt als fix für erkannte Fehler die aus PHPstan Version Bugs auftreten und gewollte
      Zustände wie das die Entities IDs nur lesbar sind
+4) Entities verfügbar gemacht für die API-Platform
