@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VermittlerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=VermittlerRepository::class)
  * @ORM\Table(name="std.vermittler")
  */
@@ -49,7 +51,7 @@ class Vermittler
     /**
      * @ORM\OneToMany(targetEntity=TblKunden::class, mappedBy="vermittler_id")
      */
-    private ArrayCollection $tblKundens;
+    private Collection $tblKundens;
 
     public function __construct()
     {
