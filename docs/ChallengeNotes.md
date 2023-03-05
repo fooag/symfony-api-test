@@ -190,3 +190,14 @@ Start: 11:00
    ``
 
 9) Einschränken der Sichtbarkeit von Vermittler da dieser nun in der Api Platform sichtbar ist auf das Notwendigste, bis bessere Lösung gefunden ist.
+
+
+Fazit:
+- Login und JWT konnten nicht mehr umgesetzt werden
+- Passwort Bedingungen konnten nicht mehr umgesetzt werden
+- Formatierung des "Erwartetes JSON Format" konnte nicht vollständig umgesetzt werden
+- Das nur Informationen für den angemeldeten Vermittler angezeigt werden konnte nicht mehr umgesetzt werden
+
+Diese Erweiterungen müssten dann noch nachgearbeitet werden.
+
+Ende 13:57
