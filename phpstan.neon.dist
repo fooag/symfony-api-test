@@ -1,0 +1,12 @@
+includes:
+    - rules.neon
+
+parameters:
+    level: 8
+    paths:
+        - src
+    excludePaths:
+        analyseAndScan:
+        	- %currentWorkingDirectory%/tests
+    reportUnmatchedIgnoredErrors: false
+    checkGenericClassInNonGenericObjectType: false

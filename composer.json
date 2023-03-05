@@ -30,6 +30,9 @@
         "symfony/yaml": "5.1.*"
     },
     "require-dev": {
+        "phpstan/phpstan": "*",
+        "squizlabs/php_codesniffer": "*",
+        "symfony/maker-bundle": "*"
     },
     "config": {
         "optimize-autoloader": true,

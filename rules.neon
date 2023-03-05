@@ -1,0 +1,66 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property App\\\\Entity\\\\Adresse\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Adresse.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Bundesland\\:\\:\\$kuerzel is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Bundesland.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\TblKunden\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/TblKunden.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\User\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/User.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Vermittler\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/Vermittler.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\VermittlerUser\\:\\:\\$id is never written, only read\\.$#"
+			count: 1
+			path: src/Entity/VermittlerUser.php
+
+		-
+			message: "#^PHPDoc tag @extends contains generic type Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository\\<App\\\\Entity\\\\Adresse\\> but class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository is not generic\\.$#"
+			count: 1
+			path: src/Repository/AdresseRepository.php
+
+		-
+			message: "#^PHPDoc tag @extends contains generic type Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository\\<App\\\\Entity\\\\Bundesland\\> but class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository is not generic\\.$#"
+			count: 1
+			path: src/Repository/BundeslandRepository.php
+
+		-
+			message: "#^PHPDoc tag @extends contains generic type Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository\\<App\\\\Entity\\\\KundeAdresse\\> but class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository is not generic\\.$#"
+			count: 1
+			path: src/Repository/KundeAdresseRepository.php
+
+		-
+			message: "#^PHPDoc tag @extends contains generic type Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository\\<App\\\\Entity\\\\TblKunden\\> but class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository is not generic\\.$#"
+			count: 1
+			path: src/Repository/TblKundenRepository.php
+
+		-
+			message: "#^PHPDoc tag @extends contains generic type Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository\\<App\\\\Entity\\\\User\\> but class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository is not generic\\.$#"
+			count: 1
+			path: src/Repository/UserRepository.php
+
+		-
+			message: "#^PHPDoc tag @extends contains generic type Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository\\<App\\\\Entity\\\\Vermittler\\> but class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository is not generic\\.$#"
+			count: 1
+			path: src/Repository/VermittlerRepository.php
+
+		-
+			message: "#^PHPDoc tag @extends contains generic type Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository\\<App\\\\Entity\\\\VermittlerUser\\> but class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository is not generic\\.$#"
+			count: 1
+			path: src/Repository/VermittlerUserRepository.php
