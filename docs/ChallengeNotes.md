@@ -20,7 +20,31 @@ Start: 11:00
        ....
        }
       ``
-       Fix noch offen
+       Fix siehe Punkt 8
+       ``json
+       {
+       "@context": "/api/contexts/Adresse",
+       "@id": "/api/adressen",
+       "@type": "hydra:Collection",
+       "hydra:member": [
+       {
+       "@id": "/api/adressen/1",
+       "@type": "Adresse",
+       "id": 1,
+       "strasse": "Invalidenstr. 23",
+       "plz": "10115",
+       "ort": "Berlin",
+       "bundesland": {
+       "kuerzel": "BE",
+       "name": "Berlin",
+       "__initializer__": null,
+       "__cloner__": null,
+       "__isInitialized__": true
+       }
+       },
+       ....
+       }
+       ``
        - bei `curl -X GET "http://localhost:8080/api/tbl_kundens?page=1" -H  "accept: application/ld+json"`
          Fehler:
          ``json
@@ -95,3 +119,74 @@ Start: 11:00
       ....
       }
       ``
+      Fix siehe Punkt 8
+      ``json
+      {
+      "@context": "/api/contexts/TblKunden",
+      "@id": "/api/kunden",
+      "@type": "hydra:Collection",
+      "hydra:member": [
+      {
+      "kundeId": {
+      "@id": "/api/kunden/05EEC268",
+      "@type": "TblKunden",
+      "id": "05EEC268",
+      "name": "von Burgenstaedt",
+      "vorname": "Max",
+      "firma": null,
+      "geburtsdatum": "1999-12-15T00:00:00+00:00",
+      "geloescht": 0,
+      "geschlecht": null,
+      "email": null,
+      "vermittlerId": "/api/vermittlers/4000"
+      },
+      ....
+      }
+      ``
+    - Bei `curl -X GET "http://localhost:8080/api/kunden/3/adressen/{adress_id}/details" -H  "accept: application/ld+json"` konnte per APi-Platform keine Lösung gefunden werden
+      wie ein Zweiter Parameter bereitgestellt wurde. Daher Test per Curl Konsole `curl -X GET http://localhost:8080/api/kunden/05EEC268/adressen/6/details?page=1 -H  "accept: application/json"`.
+      Respone:
+      ``json
+      {
+      "kundeId": {
+      "id": "05EEC268",
+      "name": "von Burgenstaedt",
+      "vorname": "Max",
+      "firma": null,
+      "geburtsdatum": "1999-12-15T00:00:00+00:00",
+      "geloescht": 0,
+      "geschlecht": null,
+      "email": null,
+      "vermittlerId": "\/api\/vermittlers\/4000"
+      },
+      "adresseId": {
+      "id": 6,
+      "strasse": "Müllerdamm Allee 178",
+      "plz": "11447",
+      "ort": "Burgenstaedt",
+      "bundesland": {
+      "kuerzel": "BB",
+      "name": "Brandenburg",
+      "__initializer__": null,
+      "__cloner__": null,
+      "__isInitialized__": true
+      }
+      },
+      "geschaeftlich": false,
+      "rechnungsadresse": true,
+      "geloescht": false
+      }
+      ``
+
+
+8) Recherche was der Fehler sein kann von "permission denied for table bundesland"
+   - Fix durch Einfügen folgender Zeilen in das SQL Statement beim erstellen der Datenbank
+   ``SQL
+     GRANT ALL ON SCHEMA public TO sadmin WITH GRANT OPTION;
+     GRANT USAGE ON SCHEMA public TO web;
+     ALTER DEFAULT PRIVILEGES IN SCHEMA public
+     GRANT INSERT, SELECT, UPDATE, DELETE, TRUNCATE ON TABLES
+     TO web;
+   ``
+
+9) Einschränken der Sichtbarkeit von Vermittler da dieser nun in der Api Platform sichtbar ist auf das Notwendigste, bis bessere Lösung gefunden ist.

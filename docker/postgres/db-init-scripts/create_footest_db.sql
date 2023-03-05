@@ -25,6 +25,12 @@ CREATE EXTENSION pgcrypto;
 
 CREATE TYPE public.geschlecht AS enum ('männlich', 'weiblich', 'divers');
 
+GRANT ALL ON SCHEMA public TO sadmin WITH GRANT OPTION;
+GRANT USAGE ON SCHEMA public TO web;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT INSERT, SELECT, UPDATE, DELETE, TRUNCATE ON TABLES
+    TO web;
+
 CREATE TABLE public.bundesland (
     kuerzel char(2) PRIMARY KEY,
     name text NOT NULL
