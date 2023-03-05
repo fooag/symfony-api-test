@@ -5,9 +5,13 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(attributes={
+ *     "normalization_context"={"groups"={"read"}},
+ *     "denormalization_context"={"groups"={"write"}}
+ * })
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="sec.user")
  */
@@ -23,27 +27,32 @@ class User
 
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
+     * @Groups({"read", "write"})
      */
     private ?string $email;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
+     * @Groups("write")
      */
     private ?string $passwd;
 
     /**
      * @ORM\OneToOne(targetEntity=TblKunden::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="kundenid",             nullable=false)
+     * @Groups("write")
      */
     private TblKunden $kundenid;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read", "write"})
      */
     private ?int $aktiv;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read", "write"})
      */
     private ?\DateTimeInterface $last_login;
 

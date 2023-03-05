@@ -7,7 +7,17 @@ use App\Repository\AdresseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"={"path"="/adressen.{_format}"},
+ *         "post"={"path"="/adressen.{_format}"},
+ *     },
+ *     itemOperations={
+ *         "get" = {"path"="/adressen/{id}.{_format}"},
+ *         "put" = {"path"="/adressen/{id}.{_format}"},
+ *         "delete" = {"path"="/adressen/{id}.{_format}"},
+ *     },
+ * )
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
  * @ORM\Table(name="std.adresse")
  */

@@ -3,11 +3,40 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\KundenAdressenController;
+use App\Controller\KundenAdressenDetailsController;
+use App\Controller\KundenUserController;
 use App\Repository\TblKundenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"={"path"="/kunden.{_format}"},
+ *         "post"={"path"="/kunden.{_format}"},
+ *     },
+ *     itemOperations={
+ *         "get" = {"path"="/kunden/{id}.{_format}"},
+ *         "put" = {"path"="/kunden/{id}.{_format}"},
+ *         "delete" = {"path"="/kunden/{id}.{_format}"},
+ *         "get_adressen": {
+ *             "method": "GET",
+ *             "path": "/kunden/{id}/adressen.{_format}",
+ *             "controller": KundenAdressenController::class
+ *         },
+ *         "get_adressen_details": {
+ *             "method": "GET",
+ *             "path": "/kunden/{id}/adressen/{adress_id}/details.{_format}",
+ *             "controller": KundenAdressenDetailsController::class
+ *         },
+ *         "get_user": {
+ *             "method": "GET",
+ *             "path": "/kunden/{id}/user.{_format}",
+ *             "controller": KundenUserController::class
+ *         }
+ *     },
+ * )
+ *
  * @ORM\Entity(repositoryClass=TblKundenRepository::class)
  * @ORM\Table(name="std.tbl_kunden")
  */
