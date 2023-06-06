@@ -1,4 +1,14 @@
 api_platform:
     resource: .
     type: api_platform
-    prefix: /api
+    prefix: /foo
+# get redirect name to api route
+api_foo:
+    path: /foo
+# permanently route root-page to api
+root:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        path: /foo
+        permanent: true
