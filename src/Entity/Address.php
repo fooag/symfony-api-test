@@ -87,7 +87,7 @@ class Address
             'required' => true
         ]
     )]
-    #[Groups(['address:read','address:write', 'address:change'])]
+    #[Groups(['address:read', 'address:write', 'address:change', 'kunde:read'])]
     #[SerializedName('strasse')]
     private ?string $street = null;
 
@@ -100,7 +100,7 @@ class Address
             'required' => true
         ]
     )]
-    #[Groups(['address:read','address:write','address:change'])]
+    #[Groups(['address:read','address:write','address:change', 'kunde:read'])]
     #[SerializedName('plz')]
     private ?string $zip = null;
 
@@ -113,7 +113,7 @@ class Address
             'required' => true
         ]
     )]
-    #[Groups(['address:read','address:write', 'address:change'])]
+    #[Groups(['address:read','address:write', 'address:change', 'kunde:read'])]
     #[SerializedName('ort')]
     private ?string $city = null;
 
@@ -135,6 +135,20 @@ class Address
     )]
     #[Groups(['address:read','address:write'])]
     private Collection $customers;
+
+    #[ORM\ManyToOne(targetEntity: State::class),
+        ORM\JoinColumn(name: 'bundesland', referencedColumnName: 'kuerzel', nullable: false)
+    ]
+    #[ApiProperty(
+        required: true,
+        openapiContext: [
+            'type' => 'string',
+            'required' => false,
+            'example' => 'BE'
+        ]
+    )]
+    #[Groups(['address:read','address:write', 'kunde:read'])]
+    private ?State $state = null;
 
     public function __construct()
     {
@@ -238,6 +252,18 @@ class Address
                 $customerAddress->setAddress(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }
