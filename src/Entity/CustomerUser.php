@@ -87,7 +87,7 @@ class CustomerUser
             'required' => true
         ]
     )]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'kunde:read'])]
     #[SerializedName('username')]
     private ?string $email = null;
 
@@ -115,7 +115,7 @@ class CustomerUser
             'default' => 'true'
         ]
     )]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'kunde:read'])]
     #[SerializedName('aktiv')]
     private ?bool $active = true;
 
@@ -127,7 +127,7 @@ class CustomerUser
             'example' => '1970-01-01T00:00:00+00:00'
         ]
     )]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'kunde:read'])]
     private ?\DateTimeInterface $lastLogin = null;
 
     #[ORM\OneToOne(inversedBy: 'customerUser', targetEntity: Customer::class, cascade: ['persist', 'remove']),

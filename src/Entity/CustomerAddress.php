@@ -70,7 +70,7 @@ class CustomerAddress
             'default' => null,
         ]
     )]
-    #[Groups(['details:read', 'details:write'])]
+    #[Groups(['details:read', 'details:write', 'kunde:read'])]
     private ?bool $business = null;
 
     #[ORM\Column(name: 'rechnungsadresse', type: Types::BOOLEAN, nullable: true)]
@@ -81,7 +81,7 @@ class CustomerAddress
             'default' => null
         ]
     )]
-    #[Groups(['details:read', 'details:write'])]
+    #[Groups(['details:read', 'details:write', 'kunde:read'])]
     private ?bool $billing = null;
 
     #[ORM\Column(name: 'geloescht', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]

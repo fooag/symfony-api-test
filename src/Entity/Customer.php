@@ -181,20 +181,21 @@ class Customer
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerAddress::class, fetch: 'EAGER', orphanRemoval: true),
         ORM\JoinTable(name: 'std.kunde_adresse'),
-        ORM\JoinColumn(name: "kunde_id", referencedColumnName: "id")
+        ORM\JoinColumn(name: 'kunde_id', referencedColumnName: 'id')
     ]
     private Collection $customerAddresses;
 
     #[ORM\ManyToMany(targetEntity: Address::class, inversedBy: 'customers', fetch: 'EAGER'),
         ORM\JoinTable(name: 'std.kunde_adresse'),
-        ORM\JoinColumn(name: "kunde_id", referencedColumnName: "id"),
-        ORM\InverseJoinColumn(name: "adresse_id", referencedColumnName: "adresse_id")]
-    #[Groups(['kunde:read'])]
+        ORM\JoinColumn(name: 'kunde_id', referencedColumnName: 'id'),
+        ORM\InverseJoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id')]
     #[SerializedName('adressen')]
+    #[Groups(['kunde:read'])]
     private Collection $addresses;
 
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
     #[SerializedName('user')]
+    #[Groups(['kunde:read'])]
     private ?CustomerUser $customerUser = null;
 
     public function __construct()
