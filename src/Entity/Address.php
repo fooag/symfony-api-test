@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -50,6 +51,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
             uriTemplate: '/adressen/{id}',
             requirements: ['id' => '[\d+]'],
             denormalizationContext: ['groups' => ['address:change']]
+        ),
+        new Delete(
+            uriTemplate: '/addressen/{id}',
+            requirements: ['id' => '[\d+]'],
         )
     ],
     normalizationContext: ['groups' => ['address:read']],

@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
@@ -41,6 +42,10 @@ use Symfony\Component\Validator\Constraints as Assert;
             processor: CustomerPostProcessor::class,
         ),
         new Put(
+            uriTemplate: '/kunden/{id}',
+            requirements: ['id' => '[A-Z\d*]{8}'],
+        ),
+        new Delete(
             uriTemplate: '/kunden/{id}',
             requirements: ['id' => '[A-Z\d*]{8}'],
         )
