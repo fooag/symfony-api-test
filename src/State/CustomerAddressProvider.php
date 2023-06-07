@@ -9,6 +9,9 @@ use App\Repository\AddressRepository;
 use App\Repository\CustomerAddressRepository;
 use App\Repository\CustomerRepository;
 
+/**
+ * Api-platform state provider to take customer id, address id from API user and return address details.
+ */
 class CustomerAddressProvider implements ProviderInterface
 {
     public function __construct(

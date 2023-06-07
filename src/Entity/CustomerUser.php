@@ -20,6 +20,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * User belongs to Customer, providing login data.
+ */
 #[ORM\Entity(repositoryClass: CustomerUserRepository::class),
     ORM\Table(name: 'sec.user')
 ]

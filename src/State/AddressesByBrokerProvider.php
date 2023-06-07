@@ -9,6 +9,9 @@ use App\Repository\CustomerAddressRepository;
 use App\Service\BrokerSessionService;
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * Api-platform state provider to get list of addresses by logged in Broker, respecting deleted flag.
+ */
 class AddressesByBrokerProvider implements ProviderInterface
 {
 

@@ -5,7 +5,6 @@ namespace App\Security;
 
 use App\Repository\UserRepository;
 use App\Service\BrokerSessionService;
-use Container2jgZiGj\getBrokerSessionServiceService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +20,10 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
+/**
+ * Security service to log in user and throw exception if user is not found, password not correct or even
+ * Broker is disabled or not existing.
+ */
 class LoginFormAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     public function __construct(
@@ -28,8 +31,6 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
         private RouterInterface $router,
         private BrokerSessionService $brokerSessionService
     ) {
-        $this->userRepository = $userRepository;
-        $this->router = $router;
     }
 
     public function supports(Request $request): ?bool

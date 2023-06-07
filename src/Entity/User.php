@@ -8,6 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * User logs in Broker and is type of symfony login feature.
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class),
     ORM\Table(name: 'sec.vermittler_user')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface

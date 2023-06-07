@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
+/**
+ * State just stores the Bundesland as enumerative store.
+ */
 #[ORM\Entity(repositoryClass: StateRepository::class),
     ORM\Table(name: 'public.bundesland')]
 class State

@@ -7,6 +7,9 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Service\BrokerSessionService;
 
+/**
+ * Api-platform state provider to return list of Customer(s) related to logged in Broker.
+ */
 class CustomersByBrokerProvider implements ProviderInterface
 {
     public function __construct(

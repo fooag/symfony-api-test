@@ -9,6 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Broker is the big guy on top, which logs in and does not see himself, but his allocated customers.
+ * Can be deleted by flag.
+ */
 #[ORM\Entity(repositoryClass: BrokerRepository::class),
     ORM\Table(name: 'std.vermittler')]
 class Broker

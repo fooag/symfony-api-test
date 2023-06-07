@@ -9,6 +9,10 @@ use App\Entity\Customer;
 use App\Service\BrokerSessionService;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Api-platform state processor to enrich customer by logged in broker using BrokerSessionService to prepare object for
+ * POST request.
+ */
 class CustomerPostProcessor implements ProcessorInterface
 {
     public function __construct(
@@ -22,7 +26,6 @@ class CustomerPostProcessor implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): null
     {
-
         if (!($data instanceof Customer)) {
             return null;
         }

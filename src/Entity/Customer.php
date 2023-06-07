@@ -23,6 +23,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Customer as development domain, being allocated to a Broker, having Address data as child below.
+ * Can be deleted by flag.
+ */
 #[ORM\Entity(repositoryClass: CustomerRepository::class),
     ORM\Table(name: 'std.tbl_kunden')]
 #[ApiResource(

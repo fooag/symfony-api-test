@@ -20,6 +20,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
+/**
+ * Address data of a customer, could have multiple for billing, private or business purpose, storing
+ * purpose in a child object.
+ * Can be deleted by flag.
+ */
 #[ORM\Entity(repositoryClass: AddressRepository::class),
     ORM\Table(name: 'std.adresse')]
 #[ApiResource(

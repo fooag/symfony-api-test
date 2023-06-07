@@ -10,9 +10,29 @@ use Doctrine\Common\Collections\ReadableCollection;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * When a symfony user has been logged in, this service comes into play.
+ * After login a broker is authenticated in system, related by user.
+ *
+ * It takes up system user from session and
+ * - returns belonging Broker instance (respecting deleted flag)
+ * - or can return all belonging customers,
+ * respecting deleted flag.
+ *
+ * @usage
+ *   public function __construct(
+ *       private readonly BrokerSessionService $brokerSessionService
+ *       ) {
+ *       }
+ *
+ * (... or other way of using Symfony DI. (consider autowiring). )
+ *
+ *  ...
+ *  $this->brokerSessionService->getCustomersByLoggedInBroker();
+ *  $this->brokerSessionService->getBrokerByLogin();
+ */
 class BrokerSessionService
 {
-
     public function __construct(
         protected BrokerRepository $brokerRepository,
         protected Security $security
@@ -46,6 +66,6 @@ class BrokerSessionService
 
     private function getBrokerFromRepository($user): Broker
     {
-        return $this->brokerRepository->findOneBy(['id' => $user?->getId()]);
+        return $this->brokerRepository->findOneBy(['id' => $user?->getId(), 'deleted' => false]);
     }
 }

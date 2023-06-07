@@ -12,6 +12,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * Standing in the middle of Customer and Address, combining those as m:n, adding some additional data.
+ */
 #[ORM\Entity(repositoryClass: CustomerAddressRepository::class),
     ORM\Table(name: 'std.kunde_adresse')
 ]
