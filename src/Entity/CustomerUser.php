@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\CustomerUserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,14 +42,23 @@ use Symfony\Component\Validator\Constraints as Assert;
                 )
             ],
             requirements: ['id' => '[A-Z\d*]{8}'],
-        )
+        ),
+        new Post(
+            uriTemplate: '/user/'
+        ),
+        new Put(
+            uriTemplate: '/user/{id}',
+            requirements: ['id' => '[\d+]'],
+        ),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
 )]
 class CustomerUser
 {
-    #[ORM\Id,  ORM\GeneratedValue, ORM\Column]
+    #[ORM\Id,
+        ORM\GeneratedValue(strategy: 'IDENTITY'),
+        ORM\Column(type: Types::INTEGER, nullable: false)]
     #[ApiProperty(
         identifier: true,
         openapiContext: [
@@ -56,15 +67,15 @@ class CustomerUser
             'required' => true
         ]
     )]
-    #[Groups(['user:write'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 200)]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
         groups: ['user:write']
     )]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'string',
             'example' => 'example@example.com',
@@ -75,12 +86,13 @@ class CustomerUser
     #[SerializedName('username')]
     private ?string $email = null;
 
-    #[ORM\Column(name: 'passwd',length: 255)]
+    #[ORM\Column(name: 'passwd',length: 60)]
     #[Assert\NotBlank(groups: ['user:write']),
         Assert\Length(min: 8, groups: ['user:write']),
         Assert\Regex(pattern: '/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,20}$/i', groups: ['user:write']),
     ]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'string',
             'example' => '****',
@@ -114,9 +126,16 @@ class CustomerUser
     private ?\DateTimeInterface $lastLogin = null;
 
     #[ORM\OneToOne(inversedBy: 'customerUser', targetEntity: Customer::class, cascade: ['persist', 'remove']),
-        ORM\JoinColumn(name: 'kundenid', nullable: false)
+        ORM\JoinColumn(name: 'kundenid', referencedColumnName: 'id', nullable: false)
     ]
-    #[Groups(['user:write'])]
+    #[ApiProperty(
+        required: true,
+        openapiContext: [
+            'type' => 'object',
+            'required' => true
+        ]
+    )]
+    #[Groups(['user:read', 'user:write'])]
     private ?Customer $customer = null;
 
     public function getId(): ?int

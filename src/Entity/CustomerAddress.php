@@ -62,24 +62,26 @@ class CustomerAddress
     )]
     private ?Address $address = null;
 
-    #[ORM\Column(name: 'geschaeftlich', type: Types::BOOLEAN, nullable: false)]
+    #[ORM\Column(name: 'geschaeftlich', type: Types::BOOLEAN, nullable: true)]
     #[ApiProperty(
         openapiContext: [
             'type' => 'boolean',
-            'example' => true
+            'example' => true,
+            'default' => null,
         ]
     )]
-    #[Groups(['details:read'])]
+    #[Groups(['details:read', 'details:write'])]
     private ?bool $business = null;
 
-    #[ORM\Column(name: 'rechnungsadresse', type: Types::BOOLEAN, nullable: false)]
+    #[ORM\Column(name: 'rechnungsadresse', type: Types::BOOLEAN, nullable: true)]
     #[ApiProperty(
         openapiContext: [
             'type' => 'boolean',
-            'example' => true
+            'example' => true,
+            'default' => null
         ]
     )]
-    #[Groups(['details:read'])]
+    #[Groups(['details:read', 'details:write'])]
     private ?bool $billing = null;
 
     #[ORM\Column(name: 'geloescht', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
@@ -87,10 +89,11 @@ class CustomerAddress
     #[ApiProperty(
         openapiContext: [
             'type' => 'boolean',
-            'example' => false
+            'example' => false,
+            'default' => false,
         ]
     )]
-    private ?bool $deleted = null;
+    private ?bool $deleted = false;
 
 
     public function getCustomer(): ?Customer

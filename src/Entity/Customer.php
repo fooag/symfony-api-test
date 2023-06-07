@@ -7,7 +7,10 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\CustomerRepository;
+use App\State\CustomerPostProcessor;
 use App\State\CustomersByBrokerProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,6 +35,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/kunden/{id}',
             requirements: ['id' => '[A-Z\d*]{8}'],
+        ),
+        new Post(
+            uriTemplate: '/kunden/',
+            processor: CustomerPostProcessor::class,
+        ),
+        new Put(
+            uriTemplate: '/kunden/{id}',
+            requirements: ['id' => '[A-Z\d*]{8}'],
         )
     ],
     normalizationContext: ['groups' => ['kunde:read']],
@@ -39,10 +50,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Customer
 {
+    private const GENDER = ['männlich', 'weiblich', 'divers'];
+
     /**
-     * @var string generated alphanumeric identifier, not to be guessed by a front end user
+     * @var string|null generated alphanumeric identifier, not to be guessed by a front end user
      */
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(length: 36, nullable: false)]
+    #[ORM\Id,
+        ORM\GeneratedValue(strategy: 'AUTO'),
+        ORM\Column(type: Types::STRING, length: 8)
+    ]
     #[ApiProperty(
         identifier: true,
         openapiContext: [
@@ -53,24 +69,28 @@ class Customer
         ]
     )]
     #[Groups(['kunde:read'])]
-    private string $id;
+    private ?string $id = null;
 
-    #[ORM\Column(name: 'name', length: 255, nullable: true)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'string',
-            'example' => 'Doe'
+            'example' => 'Doe',
+            'required' => true
         ]
     )]
     #[Groups(['kunde:read', 'kunde:write'])]
     #[SerializedName('name')]
     private ?string $lastName = null;
 
-    #[ORM\Column(name: 'vorname', length: 255, nullable: true)]
+    #[ORM\Column(name: 'vorname', type: Types::STRING, length: 255, nullable: true)]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'string',
-            'example' => 'John'
+            'example' => 'John',
+            'required' => true
         ]
     )]
     #[Groups(['kunde:read', 'kunde:write'])]
@@ -94,9 +114,11 @@ class Customer
     #[ORM\Column(name: 'geburtsdatum', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'date',
-            'example' => '1970-01-01'
+            'example' => '1970-01-01',
+            'required' => true
         ]
     )]
     #[Groups(['kunde:read', 'kunde:write'])]
@@ -114,19 +136,20 @@ class Customer
     #[Groups(['kunde:write'])]
     private bool $deleted = false;
 
-    #[ORM\Column(name: 'geschlecht', length: 255, nullable: true)]
+    #[ORM\Column(name: 'geschlecht', type: Types::STRING, length: 255, nullable: true)]
+    #[Assert\Choice(choices: self::GENDER)]
     #[ApiProperty(
         openapiContext: [
             'type' => 'boolean',
             'example' => 'divers',
-            'enum' => ['männlich', 'weiblich', 'divers']
+            'enum' => self::GENDER
         ]
     )]
     #[Groups(['kunde:read', 'kunde:write'])]
     #[SerializedName('geschlecht')]
-    private ?string $gender = 'divers';
+    private ?string $gender = self::GENDER[2];
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
         groups: ['user:write']
@@ -175,7 +198,7 @@ class Customer
         $this->customerAddresses = new ArrayCollection();
     }
 
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }

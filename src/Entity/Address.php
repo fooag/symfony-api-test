@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\AddressRepository;
 use App\State\AddressesByBrokerProvider;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -40,6 +42,14 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
                 )
             ],
             requirements: ['id' => '[A-Z\d*]{8}']
+        ),
+        new Post(
+            uriTemplate: '/adressen/',
+        ),
+        new Put(
+            uriTemplate: '/adressen/{id}',
+            requirements: ['id' => '[\d+]'],
+            denormalizationContext: ['groups' => ['address:change']]
         )
     ],
     normalizationContext: ['groups' => ['address:read']],
@@ -47,7 +57,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 )]
 class Address
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(name: 'adresse_id')]
+    #[ORM\Id,
+        ORM\GeneratedValue(strategy: 'IDENTITY'),
+        ORM\Column(name: 'adresse_id', type: Types::INTEGER, nullable: false)
+    ]
     #[ApiProperty(
         identifier: true,
         openapiContext: [
@@ -60,49 +73,62 @@ class Address
     #[SerializedName('adresseId')]
     private ?int $id = null;
 
-
     #[ORM\Column(name: 'strasse', type: Types::TEXT, nullable: true)]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'string',
-            'example' => 'Wallstreet'
+            'example' => 'Wallstreet',
+            'required' => true
         ]
     )]
-    #[Groups(['address:read','address:write'])]
+    #[Groups(['address:read','address:write', 'address:change'])]
     #[SerializedName('strasse')]
     private ?string $street = null;
 
     #[ORM\Column(name: 'plz', length: 10, nullable: true)]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'string',
-            'example' => '12345'
+            'example' => '12345',
+            'required' => true
         ]
     )]
-    #[Groups(['address:read','address:write'])]
+    #[Groups(['address:read','address:write','address:change'])]
     #[SerializedName('plz')]
     private ?string $zip = null;
 
     #[ORM\Column(name: 'ort', type: Types::TEXT)]
     #[ApiProperty(
+        required: true,
         openapiContext: [
             'type' => 'string',
-            'example' => 'Berlin'
+            'example' => 'Berlin',
+            'required' => true
         ]
     )]
-    #[Groups(['address:read','address:write'])]
+    #[Groups(['address:read','address:write', 'address:change'])]
     #[SerializedName('ort')]
     private ?string $city = null;
 
-    #[ORM\OneToMany(mappedBy: 'address', targetEntity: CustomerAddress::class, fetch: 'EAGER', orphanRemoval: true),
+    #[ORM\OneToMany(mappedBy: 'address', targetEntity: CustomerAddress::class, orphanRemoval: true),
         ORM\JoinTable(name: 'std.kunde_adresse'),
         ORM\JoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id')
     ]
     #[SerializedName('details')]
     private Collection $customerAddresses;
 
-    #[ORM\ManyToMany(targetEntity: Customer::class, mappedBy: 'addresses', fetch:"EAGER")]
+    #[ORM\ManyToMany(targetEntity: Customer::class, mappedBy: 'addresses')]
     #[ORM\JoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id')]
+    #[ApiProperty(
+        required: true,
+        openapiContext: [
+            'type' => 'object',
+            'required' => true
+        ]
+    )]
+    #[Groups(['address:read','address:write'])]
     private Collection $customers;
 
     public function __construct()

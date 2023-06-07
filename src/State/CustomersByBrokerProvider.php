@@ -5,15 +5,16 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Entity\Broker;
-use App\Repository\BrokerRepository;
-use App\Repository\CustomerRepository;
-use Symfony\Bundle\SecurityBundle\Security;
+use App\Service\BrokerSessionService;
 
-class CustomersByBrokerProvider extends AbstractSessionProvider
+class CustomersByBrokerProvider implements ProviderInterface
 {
+    public function __construct(
+        private readonly BrokerSessionService $brokerSessionService
+    ) {
+    }
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        return $this->getCustomersByLoggedInBroker();
+        return $this->brokerSessionService->getCustomersByLoggedInBroker();
     }
 }

@@ -2,3 +2,4 @@ services:
   App\State\CustomerByBrokerProvider: ~
   App\State\AddressesByBrokerProvider: ~
   App\State\CustomerAddressProvider: ~
+  App\State\CustomerPostProcessor: ~

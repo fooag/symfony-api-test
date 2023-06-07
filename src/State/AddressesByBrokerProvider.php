@@ -4,23 +4,23 @@ declare(strict_types=1);
 namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProviderInterface;
 use App\Repository\CustomerAddressRepository;
+use App\Service\BrokerSessionService;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class AddressesByBrokerProvider extends AbstractSessionProvider
+class AddressesByBrokerProvider implements ProviderInterface
 {
-    private CustomerAddressRepository $customerAddressRepository;
 
-    #[Required]
-    public function setCustomerAddressRepository(CustomerAddressRepository $customerAddressRepository): void
-    {
-        $this->customerAddressRepository = $customerAddressRepository;
+    public function __construct(
+        private readonly BrokerSessionService $brokerSessionService,
+        private readonly CustomerAddressRepository $customerAddressRepository
+    ) {
     }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        $customers = $this->getCustomersByLoggedInBroker();
+        $customers = $this->brokerSessionService->getCustomersByLoggedInBroker();
 
         //todo replace block by one query
         $references = $this->customerAddressRepository->findBy(['customer' => $customers?->getValues(), 'deleted' => false]);
