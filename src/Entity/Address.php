@@ -136,7 +136,7 @@ class Address
     #[Groups(['address:read','address:write'])]
     private Collection $customers;
 
-    #[ORM\ManyToOne(targetEntity: State::class),
+    #[ORM\ManyToOne(targetEntity: State::class, cascade: ['persist']),
         ORM\JoinColumn(name: 'bundesland', referencedColumnName: 'kuerzel', nullable: false)
     ]
     #[ApiProperty(
