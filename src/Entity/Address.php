@@ -122,19 +122,16 @@ class Address
     #[SerializedName('ort')]
     private ?string $city = null;
 
-    #[ORM\OneToMany(mappedBy: 'address', targetEntity: CustomerAddress::class, orphanRemoval: true),
+    #[ORM\ManyToMany(targetEntity: Customer::class, mappedBy: 'addresses', fetch: 'EAGER'),
         ORM\JoinTable(name: 'std.kunde_adresse'),
-        ORM\JoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id')
+        ORM\JoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id'),
+        ORM\InverseJoinColumn(name: 'kunde_id', referencedColumnName: 'id')
     ]
-    #[SerializedName('details')]
-    private Collection $customerAddresses;
-
-    #[ORM\ManyToMany(targetEntity: Customer::class, mappedBy: 'addresses')]
-    #[ORM\JoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id')]
     #[ApiProperty(
         required: true,
         openapiContext: [
-            'type' => 'object',
+            'type' => 'array',
+            'items' => ['type' => 'object'],
             'required' => true
         ]
     )]
@@ -158,7 +155,6 @@ class Address
     public function __construct()
     {
         $this->customers = new ArrayCollection();
-        $this->customerAddresses = new ArrayCollection();
     }
 
 
@@ -203,7 +199,6 @@ class Address
         return $this;
     }
 
-
     /**
      * @return Collection<int, Customer>
      */
@@ -226,36 +221,6 @@ class Address
     {
         if ($this->customers->removeElement($customer)) {
             $customer->removeAddress($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CustomerAddress>
-     */
-    public function getCustomerAddresses(): Collection
-    {
-        return $this->customerAddresses;
-    }
-
-    public function addCustomerAddress(CustomerAddress $customerAddress): self
-    {
-        if (!$this->customerAddresses->contains($customerAddress)) {
-            $this->customerAddresses->add($customerAddress);
-            $customerAddress->setAddress($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCustomerAddress(CustomerAddress $customerAddress): self
-    {
-        if ($this->customerAddresses->removeElement($customerAddress)) {
-            // set the owning side to null (unless already changed)
-            if ($customerAddress->getAddress() === $this) {
-                $customerAddress->setAddress(null);
-            }
         }
 
         return $this;

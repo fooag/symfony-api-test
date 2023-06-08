@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 'customerId' => '[A-Z\d*]{8}',
                 'addressId' => '[\d+]'
             ],
-            provider: CustomerAddressProvider::class
+            provider: CustomerAddressProvider::class,
         ),
     ],
     normalizationContext: ['groups' => ['details:read']],
@@ -52,7 +52,7 @@ class CustomerAddress
     private ?Customer $customer = null;
 
     #[ORM\Id,
-        ORM\ManyToOne(targetEntity: Address::class,fetch: 'EAGER', inversedBy: 'customerAddresses'),
+        ORM\ManyToOne(targetEntity: Address::class, fetch: 'EAGER'),
         ORM\JoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id', nullable: false)
     ]
     #[ApiProperty(

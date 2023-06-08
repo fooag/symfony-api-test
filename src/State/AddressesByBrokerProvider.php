@@ -5,9 +5,10 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Repository\CustomerAddressRepository;
+use App\Entity\Customer;
 use App\Service\BrokerSessionService;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Api-platform state provider to get list of addresses by logged in Broker, respecting deleted flag.
@@ -16,20 +17,19 @@ class AddressesByBrokerProvider implements ProviderInterface
 {
 
     public function __construct(
-        private readonly BrokerSessionService $brokerSessionService,
-        private readonly CustomerAddressRepository $customerAddressRepository
+        private readonly BrokerSessionService $brokerSessionService
     ) {
     }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
+        /** @var Collection<Customer> $customers */
         $customers = $this->brokerSessionService->getCustomersByLoggedInBroker();
 
         //todo replace block by one query
-        $references = $this->customerAddressRepository->findBy(['customer' => $customers?->getValues(), 'deleted' => false]);
         $addresses = new ArrayCollection();
-        foreach ($references as &$reference) {
-            $addresses->add($reference->getAddress());
+        foreach ($customers as $customer) {
+            $addresses->add($customer->getAddresses());
         }
 
         return $addresses;
