@@ -181,6 +181,7 @@ class Customer
         ORM\JoinColumn(name: 'vermittler_id', referencedColumnName: 'id', nullable: false)
     ]
     #[SerializedName('vermittlerId')]
+    #[Groups(['kunde:read'])]
     private ?Broker $broker;
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerAddress::class, fetch: 'EAGER', orphanRemoval: true),

@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use App\Repository\BrokerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Broker is the big guy on top, which logs in and does not see himself, but his allocated customers.
@@ -18,6 +20,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Broker
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'integer',
+            'example' => '1000',
+            'required' => true
+        ]
+    )]
+    #[Groups(['kunde:read'])]
     private int $id;
 
     /**
