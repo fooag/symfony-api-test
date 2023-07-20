@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\VermittlerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,6 +19,15 @@ class Vermittler
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups('kunde')]
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'integer',
+            'description' => 'ID der des Vermittlers',
+            'example' => 2000,
+            'required' => true,
+        ]
+    )]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

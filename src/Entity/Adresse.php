@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -44,25 +45,66 @@ class Adresse
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'adresse_id')]
     #[Groups('kunde')]
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'integer',
+            'description' => 'ID der Adresse',
+            'example' => 2,
+            'required' => true,
+        ]
+    )]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups('kunde')]
     #[Assert\NotBlank]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Strasse mit Hausnummer',
+            'example' => 'Musterstrasse 1',
+            'required' => true,
+        ]
+    )]
     private ?string $strasse = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     #[Groups('kunde')]
     #[Assert\NotBlank]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Postleitzahl',
+            'example' => '24229',
+            'required' => true,
+        ]
+    )]
     private ?string $plz = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups('kunde')]
     #[Assert\NotBlank]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Stadt/Ort',
+            'example' => 'Musterstadt',
+            'required' => true,
+        ]
+    )]
     private ?string $ort = null;
 
     #[Groups('kunde')]
     #[Assert\NotBlank]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Bundesland',
+            'example' => 'Brandenburg',
+            'required' => true,
+        ]
+    )]
     private ?string $bundesland = null;
 
     #[ORM\ManyToOne(targetEntity: Bundesland::class)]

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -42,20 +43,54 @@ class Kunde
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::STRING, length: 36, nullable: true)]
     #[Groups('kunde')]
+    #[ApiProperty(
+        identifier: true,
+        openapiContext: [
+            'type' => 'string',
+            'format' => 'uuid',
+            'description' => 'UUID des Kunden',
+            'example' => 'E97DEF37',
+            'required' => true,
+        ]
+    )]
     private ?string $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['kunde', 'post'])]
     #[Assert\NotBlank]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Nachname des Kunden',
+            'example' => 'Mustermann',
+            'required' => true,
+        ]
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['kunde', 'post'])]
     #[Assert\NotBlank]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Vorname des Kunden',
+            'example' => 'Max',
+            'required' => true,
+        ]
+    )]
     private ?string $vorname = null;
 
     #[Groups(['post'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Firma des Kunden',
+            'example' => 'Max Musterman GmbH',
+            'required' => false,
+        ]
+    )]
     private ?string $firma = null;
 
     #[ORM\Column(nullable: true)]
@@ -63,6 +98,14 @@ class Kunde
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[Assert\NotBlank]
     #[Assert\Date]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'date',
+            'description' => 'Geburtsdatum des Kunden',
+            'example' => '2001-01-01',
+            'required' => false,
+        ]
+    )]
     private ?\DateTimeImmutable $geburtsdatum = null;
 
     #[ORM\Column(nullable: true)]
@@ -71,6 +114,14 @@ class Kunde
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['kunde', 'post'])]
     #[Assert\Email]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'date',
+            'description' => 'Email des Kunden',
+            'example' => 'max.musterman@foo.de',
+            'required' => false,
+        ]
+    )]
     private ?string $email = null;
 
     #[Groups('kunde')]
