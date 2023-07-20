@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\Link;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Validation as CustomAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'sec.user')]
@@ -37,10 +39,13 @@ class User
 
     #[ORM\Column(length: 200, nullable: true)]
     #[Groups(['read', 'write', 'kunde'])]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(length: 60, nullable: true)]
     #[Groups(['write'])]
+    #[CustomAssert\Password]
     private ?string $passwd = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]

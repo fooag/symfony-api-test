@@ -3,21 +3,34 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\AdresseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdresseRepository::class)]
 #[ORM\Table(name: 'std.adresse')]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(uriTemplate: '/adressen/{id}'),
+        new Put(uriTemplate: '/adressen/{id}'),
+        new Delete(uriTemplate: '/adressen/{id}'),
+        new Post(uriTemplate: '/adressen'),
+        new GetCollection(uriTemplate: '/adressen'),
+    ],
+)]
 #[ApiResource(
     uriTemplate: '/kunden/{id}/adressen',
-    operations: [new GetCollection()],
+    operations: [
+        new GetCollection(),
+    ],
     uriVariables: [
         'id' => new Link(
             fromProperty: 'adressen',
@@ -35,17 +48,21 @@ class Adresse
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups('kunde')]
+    #[Assert\NotBlank]
     private ?string $strasse = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     #[Groups('kunde')]
+    #[Assert\NotBlank]
     private ?string $plz = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups('kunde')]
+    #[Assert\NotBlank]
     private ?string $ort = null;
 
     #[Groups('kunde')]
+    #[Assert\NotBlank]
     private ?string $bundesland = null;
 
     #[ORM\ManyToOne(targetEntity: Bundesland::class)]

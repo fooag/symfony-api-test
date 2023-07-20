@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\KundeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: KundeRepository::class)]
 #[ORM\Table(name: 'std.tbl_kunden')]
@@ -24,9 +26,11 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
         new Get(uriTemplate: '/kunden/{id}'),
         new Put(uriTemplate: '/kunden/{id}'),
         new Delete(uriTemplate: '/kunden/{id}'),
+        new Post(uriTemplate: '/kunden'),
         new GetCollection(uriTemplate: '/kunden'),
     ],
-    normalizationContext: ['groups' => ['kunde']]
+    normalizationContext: ['groups' => ['kunde']],
+    denormalizationContext: ['groups' => ['post']],
 )]
 class Kunde
 {
@@ -42,26 +46,32 @@ class Kunde
     private ?string $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'post'])]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'post'])]
+    #[Assert\NotBlank]
     private ?string $vorname = null;
 
+    #[Groups(['post'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $firma = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'post'])]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Assert\NotBlank]
+    #[Assert\Date]
     private ?\DateTimeImmutable $geburtsdatum = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $geloescht = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'post'])]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[Groups('kunde')]
@@ -69,6 +79,7 @@ class Kunde
 
     #[ORM\ManyToOne(inversedBy: 'std.vermittler')]
     #[ORM\JoinColumn(name: 'vermittler_id', nullable: false)]
+    #[Groups(['post'])]
     private ?Vermittler $vermittler = null;
 
     #[ORM\JoinTable(name: 'std.kunde_adresse')]
