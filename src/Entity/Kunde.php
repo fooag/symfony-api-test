@@ -34,6 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Kunde
 {
+    private const GESCHLAECHT = ['männlich', 'weiblich', 'divers'];
+
     public function __construct()
     {
         $this->adressen = new ArrayCollection();
@@ -95,9 +97,8 @@ class Kunde
 
     #[ORM\Column(nullable: true)]
     #[Groups(['kunde', 'post'])]
-    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[Assert\NotBlank]
-    #[Assert\Date]
     #[ApiProperty(
         openapiContext: [
             'type' => 'date',
@@ -110,6 +111,20 @@ class Kunde
 
     #[ORM\Column(nullable: true)]
     private ?int $geloescht = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['post'])]
+    #[Assert\Choice(choices: self::GESCHLAECHT)]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'Geschlecht des Kunden',
+            'example' => 'männlich',
+            'enum' => self::GESCHLAECHT,
+            'required' => false,
+        ]
+    )]
+    private ?string $geschlecht = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['kunde', 'post'])]
@@ -127,8 +142,9 @@ class Kunde
     #[Groups('kunde')]
     private ?string $vermittlerId = null;
 
-    #[ORM\ManyToOne(inversedBy: 'std.vermittler')]
-    #[ORM\JoinColumn(name: 'vermittler_id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Vermittler::class, inversedBy: 'kunden')]
+    #[ORM\JoinTable(name: 'std.vermittler')]
+    #[ORM\JoinColumn(name: 'vermittler_id', referencedColumnName: 'id', nullable: false)]
     #[Groups(['post'])]
     private ?Vermittler $vermittler = null;
 
@@ -206,6 +222,22 @@ class Kunde
         $this->geloescht = $geloescht;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGeschlecht(): ?string
+    {
+        return $this->geschlecht;
+    }
+
+    /**
+     * @param string|null $geschlecht
+     */
+    public function setGeschlecht(?string $geschlecht): void
+    {
+        $this->geschlecht = $geschlecht;
     }
 
     public function getEmail(): ?string
