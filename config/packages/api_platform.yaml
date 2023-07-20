@@ -5,3 +5,13 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+    doctrine:
+        enabled: true
+    formats:
+        json:
+            mime_types: [ 'application/json' ]
+#        jsonld:
+#            mime_types: [ 'application/ld+json' ]
+#        jsonhal:
+#            mime_types: [ 'application/hal+json' ]
+
