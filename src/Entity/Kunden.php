@@ -8,8 +8,11 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\KundenRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: KundenRepository::class)]
@@ -39,7 +42,7 @@ class Kunden
     #[Assert\NotBlank]
     private string $vorname;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     private string $firma;
 
@@ -54,14 +57,16 @@ class Kunden
     #[Assert\NotBlank]
     private string $geschlecht;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     #[Assert\Email]
     private string $email;
 
-    #[ORM\ManyToOne(targetEntity: Vermittler::class, inversedBy: "kunden")]
+    #[ORM\ManyToOne(targetEntity: Vermittler::class, inversedBy: 'kunden')]
     #[ORM\JoinColumn(nullable: false)]
     private Vermittler $vermittler;
+
+    private Collection $adressen;
 
     public function __construct(
         string $name,
@@ -71,7 +76,7 @@ class Kunden
         bool $geloescht,
         string $geschlecht,
         string $email,
-        Vermittler $vermittler
+        Vermittler $vermittler,
     ) {
         $this->name = $name;
         $this->vorname = $vorname;
@@ -133,5 +138,17 @@ class Kunden
     public function getVermittlerId(): int
     {
         return $this->vermittler->getId();
+    }
+
+    public function setAddressen(Collection $addressen): self
+    {
+        $this->adressen = $addressen;
+
+        return $this;
+    }
+
+    public function getAdressen(): Collection
+    {
+        return $this->adressen;
     }
 }

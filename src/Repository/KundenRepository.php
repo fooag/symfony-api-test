@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Kunden;
+use App\Repository\Factory\KundeAdressFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -23,8 +27,8 @@ class KundenRepository extends ServiceEntityRepository
         parent::__construct($registry, Kunden::class);
     }
 
-    public function findByVermittlerId(int $vermittlerId): array
+    public function findByVermittlerId(int $vermittlerId): Collection
     {
-        return $this->findBy(['vermittler' => $vermittlerId]);
+        return new ArrayCollection($this->findBy(['vermittler' => $vermittlerId]));
     }
 }
