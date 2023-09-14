@@ -18,16 +18,15 @@ class KundeAdresseRepository
 
     public function findByKundeId(string $kundeId): Collection
     {
-        $query = "SELECT std.kunde_adresse.adresse_id, std.kunde_adresse.geschaeftlich, std.kunde_adresse.rechnungsadresse 
-                  FROM std.tbl_kunden 
-                      JOIN std.kunde_adresse 
-                          ON std.kunde_adresse.kunde_id = std.tbl_kunden.id 
+        $query = "SELECT *
+                  FROM std.kunde_adresse 
+                      JOIN std.adresse 
+                          ON std.kunde_adresse.adresse_id = std.adresse.adresse_id 
                   WHERE std.kunde_adresse.kunde_id = :kundeId AND std.kunde_adresse.geloescht = false";
         $stmt = $this->entityManager->getConnection()->prepare($query);
 
         $result = $stmt->executeQuery(['kundeId' => $kundeId]);
         $adressen = $result->fetchAllAssociative();
-
         $adressCollection = new ArrayCollection();
         foreach ($adressen as $adress) {
             $adressCollection->add(KundeAdressFactory::buildKundeAdress($adress));

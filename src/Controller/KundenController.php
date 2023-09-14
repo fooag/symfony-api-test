@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Kunden;
+use App\Service\Exception\KundeNotFoundException;
 use App\Service\KundenService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,13 +20,35 @@ class KundenController extends AbstractController
     }
 
     #[Route('foo/kunden', name: 'get_kunden', methods: ['GET'])]
-    public function index(): JsonResponse
+    public function getKunden(): JsonResponse
     {
         $user = $this->getUser();
         if ($user === null) {
             return new JsonResponse('Not authenticated', 401);
         }
        $kunden = $this->service->getKunden($user->getVermittlerId());
+
+        return new JsonResponse(
+            data: $this->serializer->serialize($kunden, 'json'),
+            json: true
+        );
+    }
+
+    #[Route('foo/kunden/{id}', name: 'get_kunde', methods: ['GET'])]
+    public function getKunde(string $id): JsonResponse
+    {
+        $user = $this->getUser();
+        if ($user === null) {
+            return new JsonResponse('Not authenticated', 401);
+        }
+        try {
+            $kunden = $this->service->getKunde($id, $user->getVermittlerId());
+        } catch (KundeNotFoundException $exception) {
+            return new JsonResponse(
+                $exception->getMessage(),
+                404
+            );
+        }
 
         return new JsonResponse(
             data: $this->serializer->serialize($kunden, 'json'),
