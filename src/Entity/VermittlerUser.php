@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: VermittlerUserRepository::class)]
-#[ORM\Table(name: "sec.vermittler_user")]
+#[ORM\Table(name: 'sec.vermittler_user')]
 class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterface, VermittlerUserInterface
 {
     #[ORM\Id]
@@ -30,7 +30,7 @@ class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterfac
     #[ORM\Column(nullable: true)]
     private ?string $lastLogin = null;
 
-    #[ORM\OneToOne(inversedBy: "vermittlerUser", targetEntity: Vermittler::class)]
+    #[ORM\OneToOne(inversedBy: 'vermittlerUser', targetEntity: Vermittler::class)]
     private Vermittler $vermittler;
 
     public function __construct(

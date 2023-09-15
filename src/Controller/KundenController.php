@@ -63,7 +63,7 @@ class KundenController extends AbstractController
     {
         $user = $this->getUser();
         if ($user === null) {
-          #  return new JsonResponse('Not authenticated', 401);
+            return new JsonResponse('Not authenticated', 401);
         }
 
         $model = $this->serializer->deserialize($request->getContent(), AddKundeModel::class, 'json');
