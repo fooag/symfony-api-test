@@ -16,6 +16,7 @@ security:
             security: false
         main:
             lazy: true
+            pattern: ^/
             provider: app_user_provider
             form_login:
                 login_path: login
@@ -33,17 +34,15 @@ security:
     # Note: Only the *first* access control that matches will be used
 
     access_control:
-         - { path: ^foo/kunden$, roles: ROLE_USER, methods:[GET,POST] }
-         - { path: ^foo/kunden/[a-z0-9-]+$, roles: ROLE_USER, methods:[GET,DELETE,PUT] }
-         - { path: ^foo/kunden/[a-z0-9-]+/user$, roles: ROLE_USER, methods:[GET] }
-         - { path: ^foo/kunden/[a-z0-9-]+/adressen$, roles: ROLE_USER, methods: [GET] }
-         - { path: ^foo/kunden/[a-z0-9-]+/adressen/[a-z0-9-]+/details$, roles: ROLE_USER, methods: [GET] }
+       - { path: ^foo/login$, roles: PUBLIC_ACCESS, methods:[GET,POST] }
+       - { path: ^foo/kunden$, roles: ROLE_USER, methods:[GET,POST] }
+       - { path: ^foo/kunden/[a-z0-9-]+$, roles: ROLE_USER, methods:[GET,DELETE,PUT] }
+       - { path: ^foo/kunden/[a-z0-9-]+/user$, roles: ROLE_USER, methods:[GET] }
+       - { path: ^foo/kunden/[a-z0-9-]+/adressen$, roles: ROLE_USER, methods: [GET] }
+       - { path: ^foo/kunden/[a-z0-9-]+/adressen/[a-z0-9-]+/details$, roles: ROLE_USER, methods: [GET] }
 
-         - { path: ^foo/adressen$, roles: ROLE_USER, methods:[GET,POST] }
-         - { path: ^foo/adressen/[a-z0-9-]+$, roles: ROLE_USER, methods:[GET,DELETE,PUT] }
+       - { path: ^foo/adressen$, roles: ROLE_USER, methods:[GET,POST] }
+       - { path: ^foo/adressen/[a-z0-9-]+$, roles: ROLE_USER, methods:[GET,DELETE,PUT] }
 
-         - { path: ^foo/user$, roles: ROLE_USER, methods:[GET,POST] }
-         - { path: ^foo/user/[a-z0-9-]+$, roles: ROLE_USER, methods:[GET,DELETE,PUT] }
-
-
-        # - { path: ^/profile, roles: ROLE_USER }
+       - { path: ^foo/user$, roles: ROLE_USER, methods:[GET,POST] }
+       - { path: ^foo/user/[a-z0-9-]+$, roles: ROLE_USER, methods:[GET,DELETE,PUT] }
