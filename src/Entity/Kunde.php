@@ -7,6 +7,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Doctrine\Generators\KundenIdGenerator;
 use App\Repository\KundenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,7 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: 'foo/kunden'
-        )
+        ),
+        new Post(
+            uriTemplate: 'foo/kunden'
+        ),
     ]
 )]
 class Kunde
