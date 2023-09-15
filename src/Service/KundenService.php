@@ -11,9 +11,11 @@ use App\Repository\KundeAdresseRepository;
 use App\Repository\KundenRepository;
 use App\Repository\VermittlerRepository;
 use App\Service\Exception\KundeNotFoundException;
+use App\Service\Exception\ServiceNotAvailableException;
 use App\Service\Exception\VermittlerNotFoundException;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 
 class KundenService
 {
@@ -53,6 +55,10 @@ class KundenService
         return $kunde;
     }
 
+    /**
+     * @throws ServiceNotAvailableException
+     * @throws VermittlerNotFoundException
+     */
     public function addKunde(AddKundeModel $model, int $vermittlerId): Kunde
     {
         $vermittler = $this->vermittlerRepository->find($vermittlerId);
@@ -71,11 +77,14 @@ class KundenService
             $vermittler,
             $user
         );
-
         $user->setKunde($kunde);
 
-        $this->entityManager->persist($kunde);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->persist($kunde);
+            $this->entityManager->flush();
+        } catch (\InvalidArgumentException|ORMException $exception) {
+            throw new ServiceNotAvailableException('Could not save Kunde');
+        }
 
         return $kunde;
     }

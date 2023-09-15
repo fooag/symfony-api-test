@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Model\AddKundeModel;
 use App\Service\Exception\KundeNotFoundException;
+use App\Service\Exception\ServiceNotAvailableException;
 use App\Service\KundenService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -67,7 +68,15 @@ class KundenController extends AbstractController
         }
 
         $model = $this->serializer->deserialize($request->getContent(), AddKundeModel::class, 'json');
-        $kunde = $this->service->addKunde($model, 1000);
+        try {
+            $kunde = $this->service->addKunde($model, $user->getVermittlerId());
+        } catch (ServiceNotAvailableException $exception) {
+            return new JsonResponse(
+                $exception->getMessage(),
+                500
+            );
+        }
+
 
         return new JsonResponse(
             data: $this->serializer->serialize($kunde, 'json'),
