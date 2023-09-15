@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VermittlerRepository::class)]
-#[ORM\Table(name: "std.vermittler")]
+#[ORM\Table(name: 'std.vermittler')]
 class Vermittler
 {
     #[ORM\Id]
@@ -33,11 +33,10 @@ class Vermittler
     #[ORM\Column]
     private bool $geloescht;
 
-    #[ORM\OneToMany(mappedBy: "vermittler", targetEntity: Kunden::class)]
+    #[ORM\OneToMany(mappedBy: 'vermittler', targetEntity: Kunde::class)]
     private Collection $kunden;
 
-    #[ORM\OneToOne(mappedBy: "vermittler", targetEntity: VermittlerUser::class)]
-    #[ORM\JoinColumn(referencedColumnName: "vermittler_id")]
+    #[ORM\OneToOne(mappedBy: 'vermittler', targetEntity: VermittlerUser::class)]
     private VermittlerUser $vermittlerUser;
 
     public function __construct(
