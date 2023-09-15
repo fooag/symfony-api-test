@@ -29,7 +29,7 @@ class KundeAdresseRepository
         $adressen = $result->fetchAllAssociative();
         $adressCollection = new ArrayCollection();
         foreach ($adressen as $adress) {
-            $adressCollection->add(KundeAdressFactory::buildKundeAdress($adress));
+            $adressCollection->add(KundeAdressFactory::buildKundeAdresse($adress));
         }
 
         return $adressCollection;

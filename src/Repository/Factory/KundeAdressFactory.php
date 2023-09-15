@@ -9,7 +9,7 @@ use App\Entity\ValueObject\KundeAdresse;
 
 class KundeAdressFactory
 {
-    public static function buildKundeAdress(array $adresse): KundeAdresse
+    public static function buildKundeAdresse(array $adresse): KundeAdresse
     {
         return new KundeAdresse(
             (int)$adresse['adresse_id'],
