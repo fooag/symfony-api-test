@@ -7,6 +7,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Doctrine\Generators\KundenIdGenerator;
 use App\Repository\KundenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,17 +21,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(
-            uriTemplate: 'kunden/{id}',
+            uriTemplate: 'foo/kunden/{id}',
         ),
         new GetCollection(
-            uriTemplate: 'kunden'
+            uriTemplate: 'foo/kunden'
         )
     ]
 )]
-class Kunden
+class Kunde
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: KundenIdGenerator::class)]
     #[ORM\Column]
     private ?string $id = null;
 
@@ -66,6 +68,9 @@ class Kunden
     #[ORM\JoinColumn(nullable: false)]
     private Vermittler $vermittler;
 
+    #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: User::class, cascade: ['persist'])]
+    private User $user;
+
     private Collection $adressen;
 
     public function __construct(
@@ -73,19 +78,20 @@ class Kunden
         string $vorname,
         string $firma,
         string $geburtsdatum,
-        bool $geloescht,
         string $geschlecht,
         string $email,
         Vermittler $vermittler,
+        User $user
     ) {
         $this->name = $name;
         $this->vorname = $vorname;
         $this->firma = $firma;
         $this->geburtsdatum = $geburtsdatum;
-        $this->geloescht = $geloescht;
+        $this->geloescht = false;
         $this->geschlecht = $geschlecht;
         $this->email = $email;
         $this->vermittler = $vermittler;
+        $this->user = $user;
     }
 
     public function getId(): ?string
@@ -138,6 +144,11 @@ class Kunden
     public function getVermittlerId(): int
     {
         return $this->vermittler->getId();
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 
     public function setAddressen(Collection $addressen): self
