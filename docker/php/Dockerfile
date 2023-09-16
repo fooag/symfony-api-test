@@ -13,6 +13,6 @@ RUN ./install_packages.sh \
     && ./enable_php_ext.sh \
     && ./install_composer.sh
 
-RUN rm -Rf /custom-setup
+RUN rm -rf /custom-setup
 
 WORKDIR /www/api
