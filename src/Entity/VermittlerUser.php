@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+#[ORM\Table(name: 'sec.vermittler_user')]
 #[ORM\Entity(repositoryClass: VermittlerUserRepository::class)]
 class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -88,7 +89,7 @@ class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterfac
 
     public function getRoles(): array
     {
-        return ['ROLE_API_USER'];
+        return ['ROLE_USER'];
     }
 
     public function eraseCredentials()

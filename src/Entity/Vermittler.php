@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\VermittlerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: 'std.vermittler')]
 #[ORM\Entity(repositoryClass: VermittlerRepository::class)]
 class Vermittler
 {
