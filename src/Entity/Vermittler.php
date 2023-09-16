@@ -7,10 +7,6 @@ namespace App\Entity;
 use App\Repository\VermittlerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @todo add VermittlerUser relation
- */
-
 #[ORM\Entity(repositoryClass: VermittlerRepository::class)]
 class Vermittler
 {
@@ -33,6 +29,9 @@ class Vermittler
 
     #[ORM\Column]
     private ?bool $geloescht = null;
+
+    #[ORM\OneToOne(mappedBy: 'vermittler')]
+    private VermittlerUser $vermittlerUser;
 
     public function getId(): ?int
     {
@@ -95,6 +94,23 @@ class Vermittler
     public function setGeloescht(bool $geloescht): self
     {
         $this->geloescht = $geloescht;
+
+        return $this;
+    }
+
+    public function getVermittlerUser(): VermittlerUser
+    {
+        return $this->vermittlerUser;
+    }
+
+    public function setVermittlerUser(VermittlerUser $vermittlerUser): self
+    {
+        // set the owning side of the relation if necessary
+        if ($vermittlerUser->getVermittler() !== $this) {
+            $vermittlerUser->setVermittler($this);
+        }
+
+        $this->vermittlerUser = $vermittlerUser;
 
         return $this;
     }

@@ -7,9 +7,6 @@ namespace App\Entity;
 use App\Repository\VermittlerUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @todo add Vermittler relation
- */
 #[ORM\Entity(repositoryClass: VermittlerUserRepository::class)]
 class VermittlerUser
 {
@@ -29,6 +26,10 @@ class VermittlerUser
      */
     #[ORM\Column]
     private bool $aktiv;
+
+    #[ORM\OneToOne(inversedBy: 'vermittlerUser')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Vermittler $vermittler;
 
     public function getId(): ?int
     {
@@ -67,6 +68,18 @@ class VermittlerUser
     public function setAktiv(bool $aktiv): self
     {
         $this->aktiv = $aktiv;
+
+        return $this;
+    }
+
+    public function getVermittler(): Vermittler
+    {
+        return $this->vermittler;
+    }
+
+    public function setVermittler(Vermittler $vermittler): self
+    {
+        $this->vermittler = $vermittler;
 
         return $this;
     }
