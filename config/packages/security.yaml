@@ -10,6 +10,11 @@ security:
             lazy: true
             provider: users_in_memory
 
+            json_login:
+                # "api_login" is the name of the route created previously
+                login_path: api_login
+                check_path: api_login
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 

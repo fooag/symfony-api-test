@@ -6,9 +6,11 @@ namespace App\Entity;
 
 use App\Repository\VermittlerUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: VermittlerUserRepository::class)]
-class VermittlerUser
+class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -82,5 +84,20 @@ class VermittlerUser
         $this->vermittler = $vermittler;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_API_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        // not required;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->id;
     }
 }
