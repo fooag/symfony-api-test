@@ -6,7 +6,10 @@ namespace App\Repository;
 
 use App\Entity\VermittlerUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<VermittlerUser>
@@ -16,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method VermittlerUser[]    findAll()
  * @method VermittlerUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VermittlerUserRepository extends ServiceEntityRepository
+class VermittlerUserRepository extends ServiceEntityRepository implements UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,28 +44,20 @@ class VermittlerUserRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return VermittlerUser[] Returns an array of VermittlerUser objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
+    {
+        $entityManager = $this->getEntityManager();
 
-//    public function findOneBySomeField($value): ?VermittlerUser
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $entityManager->createQuery(
+            'SELECT vu
+                FROM App\Entity\VermittlerUser vu
+                WHERE vu.email = :email
+                AND vu.aktiv = 1'
+        )
+            ->setParameter('email', $identifier)
+            ->getOneOrNullResult();
+    }
 }

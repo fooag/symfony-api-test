@@ -3,12 +3,11 @@ security:
         App\Entity\VermittlerUser:
             algorithm: bcrypt
 
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    # https://symfony.com/doc/current/security/user_providers.html#using-a-custom-query-to-load-the-user
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\VermittlerUser
-                property: email
 
     firewalls:
         dev:
