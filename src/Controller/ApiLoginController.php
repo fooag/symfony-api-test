@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ApiLoginController extends AbstractController
+final class ApiLoginController extends AbstractController
 {
     #[Route('/foo/login', name: 'api_login', methods: ['POST'])]
     public function getTokenUser(UserInterface $user, JWTTokenManagerInterface $JWTManager): JsonResponse

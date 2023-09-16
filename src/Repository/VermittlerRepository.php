@@ -16,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Vermittler[]    findAll()
  * @method Vermittler[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VermittlerRepository extends ServiceEntityRepository
+final class VermittlerRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -40,29 +40,4 @@ class VermittlerRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-//    /**
-//     * @return Vermittler[] Returns an array of Vermittler objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Vermittler
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

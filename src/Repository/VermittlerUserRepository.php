@@ -23,7 +23,7 @@ use function get_class;
  * @method VermittlerUser[]    findAll()
  * @method VermittlerUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VermittlerUserRepository extends ServiceEntityRepository implements UserLoaderInterface, PasswordUpgraderInterface
+final class VermittlerUserRepository extends ServiceEntityRepository implements UserLoaderInterface, PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

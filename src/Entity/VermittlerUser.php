@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use App\Repository\VermittlerUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -13,12 +14,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: VermittlerUserRepository::class)]
 class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    final public const ROLE_USER = 'ROLE_USER';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 200)]
+    #[ApiProperty(description: 'Email address of the vermittler user', required: true)]
     private string $email;
 
     #[ORM\Column(name: 'passwd', length: 60)]
@@ -31,7 +35,7 @@ class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterfac
     private bool $aktiv;
 
     #[ORM\OneToOne(inversedBy: 'vermittlerUser')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false)] //@todo can it be nullable though?
     private Vermittler $vermittler;
 
     public function getId(): ?int
@@ -89,10 +93,10 @@ class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterfac
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return [self::ROLE_USER];
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // not required;
     }
