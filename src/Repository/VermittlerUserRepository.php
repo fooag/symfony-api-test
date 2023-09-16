@@ -9,7 +9,11 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function get_class;
 
 /**
  * @extends ServiceEntityRepository<VermittlerUser>
@@ -19,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method VermittlerUser[]    findAll()
  * @method VermittlerUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VermittlerUserRepository extends ServiceEntityRepository implements UserLoaderInterface
+class VermittlerUserRepository extends ServiceEntityRepository implements UserLoaderInterface, PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -59,5 +63,26 @@ class VermittlerUserRepository extends ServiceEntityRepository implements UserLo
         )
             ->setParameter('email', $identifier)
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Upgrades the hashed password of a user, typically for using a better hash algorithm.
+     * see https://symfony.com/doc/current/security/passwords.html#security-password-migration
+     */
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    {
+        if (!$user instanceof VermittlerUser) {
+            $class = get_class($user);
+            throw new UnsupportedUserException(
+                sprintf(
+                    'Instances of "%s" are not supported.',
+                    $class
+                )
+            );
+        }
+
+        $user->setPassword($newHashedPassword);
+
+        $this->getEntityManager()->flush();
     }
 }
