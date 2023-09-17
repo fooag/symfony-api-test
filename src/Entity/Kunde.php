@@ -26,19 +26,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(
-            uriTemplate: 'foo/kunden/{id}',
+            uriTemplate: 'kunden/{id}',
         ),
         new Post(
-            uriTemplate: '/foo/kunden',
+            uriTemplate: '/kunden',
         ),
         new Put(
-            uriTemplate: '/foo/kunden/{id}',
+            uriTemplate: '/kunden/{id}',
         ),
         new GetCollection(
-            uriTemplate: '/foo/kunden',
+            uriTemplate: '/kunden',
         ),
         new Delete(
-            uriTemplate: '/foo/kunden/{id}',
+            uriTemplate: '/kunden/{id}',
         ),
     ]
 )]
