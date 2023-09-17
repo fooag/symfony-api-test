@@ -9,6 +9,7 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'sec.user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -20,6 +21,7 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(name: 'email', length: 200)]
+    #[Assert\NotBlank]
     private ?string $username = null;
 
     #[ORM\Column(name: 'passwd', length: 60, nullable: true)]

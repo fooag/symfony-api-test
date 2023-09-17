@@ -28,18 +28,18 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: 'foo/kunden/{id}',
         ),
+        new Post(
+            uriTemplate: '/foo/kunden',
+        ),
+        new Put(
+            uriTemplate: '/foo/kunden/{id}',
+        ),
         new GetCollection(
             uriTemplate: '/foo/kunden',
         ),
         new Delete(
             uriTemplate: '/foo/kunden/{id}',
         ),
-        new Put(
-            uriTemplate: '/foo/kunden/{id}',
-        ),
-        new Post(
-            uriTemplate: '/foo/kunden',
-        )
     ]
 )]
 class Kunde
@@ -64,12 +64,15 @@ class Kunde
     private ?string $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $vorname = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank]
     private ?string $firma = null;
 
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
@@ -77,7 +80,7 @@ class Kunde
     private ?DateTimeInterface $geburtsdatum = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $geloescht = null;
+    private ?int $geloescht = 0;
 
     #[ORM\Column(length: 255, nullable: true)] // @todo custom data type geschlecht ('männlich', 'weiblich', 'divers')
     #[Assert\Choice(choices: self::GESCHLECHTER)]
