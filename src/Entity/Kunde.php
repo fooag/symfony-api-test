@@ -12,7 +12,9 @@ use App\Repository\KundeRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Table(name: 'std.tbl_kunden')]
 #[ORM\Entity(repositoryClass: KundeRepository::class)]
@@ -54,6 +56,7 @@ class Kunde
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $firma = null;
 
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $geburtsdatum = null;
 

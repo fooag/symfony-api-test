@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Table(name: 'sec.user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -54,6 +55,7 @@ class User
         return $this;
     }
 
+    #[Ignore]
     public function getPassword(): ?string
     {
         return $this->password;
@@ -66,6 +68,7 @@ class User
         return $this;
     }
 
+    #[Ignore]
     public function getKundenid(): ?string
     {
         return $this->kundenid;
@@ -102,6 +105,7 @@ class User
         return $this;
     }
 
+    #[Ignore]
     public function getKunde(): ?Kunde
     {
         return $this->kunde;
