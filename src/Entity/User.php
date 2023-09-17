@@ -33,6 +33,10 @@ class User
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)] // @todo is this type correct
     private ?DateTimeInterface $last_login = null;
 
+    #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]
+    #[ORM\JoinColumn(name: 'kundenid', referencedColumnName: 'id')]
+    private Kunde $kunde;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,6 +98,18 @@ class User
     public function setLastLogin(?DateTimeInterface $last_login): self
     {
         $this->last_login = $last_login;
+
+        return $this;
+    }
+
+    public function getKunde(): ?Kunde
+    {
+        return $this->kunde;
+    }
+
+    public function setKunde(Kunde $kunde): self
+    {
+        $this->kunde = $kunde;
 
         return $this;
     }

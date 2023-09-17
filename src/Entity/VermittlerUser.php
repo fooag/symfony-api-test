@@ -103,6 +103,6 @@ class VermittlerUser implements UserInterface, PasswordAuthenticatedUserInterfac
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->id;
+        return $this->email;
     }
 }

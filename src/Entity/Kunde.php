@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\KundeRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: 'std.tbl_kunden')]
 #[ORM\Entity(repositoryClass: KundeRepository::class)]
 class Kunde
 {
@@ -28,7 +30,7 @@ class Kunde
     private ?string $firma = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $geburtsdatum = null;
+    private ?DateTimeInterface $geburtsdatum = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $geloescht = null;
@@ -41,6 +43,9 @@ class Kunde
 
     #[ORM\Column]
     private ?int $vermittler_id = null;
+
+    #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: User::class, cascade: ['persist'])]
+    private ?User $user;
 
     public function getId(): ?int
     {
@@ -83,12 +88,12 @@ class Kunde
         return $this;
     }
 
-    public function getGeburtsdatum(): ?\DateTimeInterface
+    public function getGeburtsdatum(): ?DateTimeInterface
     {
         return $this->geburtsdatum;
     }
 
-    public function setGeburtsdatum(?\DateTimeInterface $geburtsdatum): self
+    public function setGeburtsdatum(?DateTimeInterface $geburtsdatum): self
     {
         $this->geburtsdatum = $geburtsdatum;
 
@@ -142,4 +147,11 @@ class Kunde
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+
 }
