@@ -1,4 +1,6 @@
 security:
+    enable_authenticator_manager: true
+
     password_hashers:
         App\Entity\VermittlerUser:
             algorithm: bcrypt
@@ -25,7 +27,7 @@ security:
                 require_previous_session: false
 
         api:
-            pattern: ^/api
+            pattern: ^/foo
             stateless: true
             jwt: ~
 
@@ -39,4 +41,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/foo/login, roles: PUBLIC_ACCESS }
-         - { path: ^/foo/user, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/foo, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/foo/kunden, roles: ROLE_USER, methods:[GET,POST] }
+         - { path: ^/foo/kunden/[a-z0-9-]+$, roles: ROLE_USER, methods:[GET,DELETE,PUT] }
