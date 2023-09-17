@@ -12,6 +12,7 @@ use App\Repository\KundeRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Table(name: 'std.tbl_kunden')]
 #[ORM\Entity(repositoryClass: KundeRepository::class)]
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
             uriTemplate: 'foo/kunden/{id}',
         ),
         new GetCollection(
-            uriTemplate: 'foo/kunden'
+            uriTemplate: '/foo/kunden',
         ),
     ]
 )]
@@ -71,7 +72,7 @@ class Kunde
     #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: User::class, cascade: ['persist'])]
     private ?User $user;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -124,6 +125,7 @@ class Kunde
         return $this;
     }
 
+    #[Ignore]
     public function getGeloescht(): ?int
     {
         return $this->geloescht;
