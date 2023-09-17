@@ -19,8 +19,8 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 200)]
-    private ?string $email = null;
+    #[ORM\Column(name: 'email', length: 200)]
+    private ?string $username = null;
 
     #[ORM\Column(name: 'passwd', length: 60, nullable: true)]
     private ?string $password = null;
@@ -31,8 +31,8 @@ class User
     #[ORM\Column(nullable: true)] // @todo can it be boolean here
     private ?int $aktiv = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)] // @todo is this type correct
-    private ?DateTimeInterface $last_login = null;
+    #[ORM\Column(name: 'last_login', type: Types::DATETIME_MUTABLE, nullable: true)] // @todo is this type correct
+    private ?DateTimeInterface $lastLogin = null;
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]
     #[ORM\JoinColumn(name: 'kundenid', referencedColumnName: 'id')]
@@ -43,14 +43,14 @@ class User
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getUsername(): ?string
     {
-        return $this->email;
+        return $this->username;
     }
 
-    public function setEmail(string $email): self
+    public function setUsername(string $username): self
     {
-        $this->email = $email;
+        $this->username = $username;
 
         return $this;
     }
@@ -95,12 +95,12 @@ class User
 
     public function getLastLogin(): ?DateTimeInterface
     {
-        return $this->last_login;
+        return $this->lastLogin;
     }
 
-    public function setLastLogin(?DateTimeInterface $last_login): self
+    public function setLastLogin(?DateTimeInterface $lastLogin): self
     {
-        $this->last_login = $last_login;
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }

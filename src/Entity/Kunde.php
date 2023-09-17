@@ -69,8 +69,8 @@ class Kunde
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $email = null;
 
-    #[ORM\Column]
-    private ?int $vermittler_id = null;
+    #[ORM\Column(name: 'vermittler_id')]
+    private ?int $vermittlerId = null;
 
     #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: User::class, cascade: ['persist'])]
     private ?User $user;
@@ -167,12 +167,12 @@ class Kunde
 
     public function getVermittlerId(): ?int
     {
-        return $this->vermittler_id;
+        return $this->vermittlerId;
     }
 
-    public function setVermittlerId(int $vermittler_id): self
+    public function setVermittlerId(int $vermittlerId): self
     {
-        $this->vermittler_id = $vermittler_id;
+        $this->vermittlerId = $vermittlerId;
 
         return $this;
     }
