@@ -43,7 +43,7 @@ use Doctrine\Common\Collections\Collection;
             uriTemplate: '/kunden/{id}',
         ),
     ],
-    normalizationContext: ['groups' => ['kunde']],
+    normalizationContext: ['groups' => ['kunde'], 'skip_null_values' => false],
 )]
 class Kunde
 {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
 use App\Repository\KundeAdresseRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -13,21 +16,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class KundeAdresse
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    #[ORM\ManyToOne(targetEntity: Adresse::class, inversedBy: 'details')]
     #[ORM\JoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id')]
     private Adresse $adresseId;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Kunde::class, inversedBy: 'kundeAdressen')]
+    #[ORM\ManyToOne(targetEntity: Kunde::class, inversedBy: 'adressen')]
     #[ORM\JoinColumn(name: 'kunde_id', referencedColumnName: 'id')]
     private Kunde $kundenId;
 
     #[ORM\Column(nullable: true)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading'])]
     private ?bool $geschaeftlich = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading'])]
     private ?bool $rechnungsadresse = null;
 
     #[ORM\Column(nullable: false)]

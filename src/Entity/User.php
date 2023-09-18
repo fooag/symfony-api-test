@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
@@ -29,8 +30,21 @@ use App\Entity\Constraints as CustomAssert;
         new Post(uriTemplate: '/user'),
         new GetCollection(uriTemplate: '/user'),
     ],
-    normalizationContext: ['groups' => ['reading']],
+    normalizationContext: ['groups' => ['reading'], 'skip_null_values' => false],
     denormalizationContext: ['groups' => ['writing']]
+)]
+#[ApiResource(
+    uriTemplate: '/kunden/{id}/user',
+    operations: [
+        new GetCollection(),
+    ],
+    uriVariables: [
+        'id' => new Link(
+            fromProperty: 'user',
+            fromClass: Kunde::class
+        )
+    ],
+    normalizationContext: ['groups' => ['reading'], 'skip_null_values' => false],
 )]
 class User
 {

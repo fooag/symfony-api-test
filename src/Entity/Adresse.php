@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\AdresseRepository;
@@ -27,6 +28,38 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(uriTemplate: '/adressen'), // @todo not working permission error with adresse_adresse_id_seq
         new GetCollection(uriTemplate: '/adressen'),
     ],
+    normalizationContext: ['groups' => ['reading'], 'skip_null_values' => false],
+    denormalizationContext: ['groups' => ['writing']]
+)]
+#[ApiResource(
+    uriTemplate: '/kunden/{id}/adressen',
+    operations: [
+        new GetCollection(),
+    ],
+    uriVariables: [
+        'id' => new Link(
+            fromProperty: 'adressen',
+            fromClass: Kunde::class
+        )
+    ],
+    normalizationContext: ['groups' => ['reading'], 'skip_null_values' => false],
+)]
+#[ApiResource(
+    uriTemplate: '/kunden/{kundeId}/adressen/{id}/details',
+    operations: [
+        new Get(),
+    ],
+    uriVariables: [
+        'kundeId' => new Link(
+            fromProperty: 'adressen',
+            fromClass: Kunde::class
+        ),
+        'id' => new Link(
+            fromProperty: 'details',
+            fromClass: Adresse::class
+        )
+    ],
+    normalizationContext: ['groups' => ['reading'], 'skip_null_values' => false],
 )]
 class Adresse
 {
@@ -46,32 +79,32 @@ class Adresse
             'required' => true,
         ]
     )]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading'])]
     private ?int $id = null; // @todo should be addresseId in kunde group ouput
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading', 'writing'])]
     private ?string $strasse = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading', 'writing'])]
     private ?string $plz = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading', 'writing'])]
     private ?string $ort = null;
 
     #[ORM\Column(length: 2, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Choice(choices: self::BUNDESLAENDER)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading', 'writing'])]
     private ?string $bundesland = null;
 
     #[ORM\OneToOne(mappedBy: 'adresseId', targetEntity: KundeAdresse::class)]
-    #[Groups('kunde')]
+    #[Groups(['kunde', 'reading', 'writing'])]
     private ?KundeAdresse $details = null;
 
     public function getId(): ?int

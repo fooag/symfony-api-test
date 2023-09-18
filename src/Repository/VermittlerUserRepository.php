@@ -58,8 +58,11 @@ final class VermittlerUserRepository extends ServiceEntityRepository implements 
         return $entityManager->createQuery(
             'SELECT vu
                 FROM App\Entity\VermittlerUser vu
+                LEFT JOIN App\Entity\Vermittler v
+                WITH v.id = vu.vermittler
                 WHERE vu.email = :email
-                AND vu.aktiv = 1'
+                AND vu.aktiv = 1
+                AND v.geloescht = false'
         )
             ->setParameter('email', $identifier)
             ->getOneOrNullResult();
