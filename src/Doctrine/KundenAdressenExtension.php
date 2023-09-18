@@ -46,7 +46,5 @@ final class KundenAdressenExtension implements QueryCollectionExtensionInterface
         $queryBuilder->andWhere('ku.vermittlerId = :vermittler_id');
         $queryBuilder->andWhere('ku.geloescht = 0');
         $queryBuilder->setParameter('vermittler_id', $vermittlerUser->getVermittler()->getId());
-
-        //echo $queryBuilder->getQuery()->getSQL(); die;
     }
 }

@@ -32,7 +32,7 @@ class Adresse
 {
     private const BUNDESLAENDER = [
         'BW', 'BY', 'BE', 'BB', 'HB', 'HH', 'HE', 'NI', 'MV', 'NW', 'RP', 'SL', 'SN', 'ST', 'SH', 'TH'
-    ];
+    ]; // @todo get from bundesland table
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -47,7 +47,7 @@ class Adresse
         ]
     )]
     #[Groups('kunde')]
-    private ?int $id = null;
+    private ?int $id = null; // @todo should be addresseId in kunde group ouput
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]

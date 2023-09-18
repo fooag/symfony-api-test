@@ -101,6 +101,7 @@ class Kunde
     private ?string $email = null;
 
     #[ORM\Column(name: 'vermittler_id')] // @todo link to Vermittler Entity
+    #[Groups('kunde')]
     private ?int $vermittlerId = null;
 
     #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: User::class, cascade: ['persist'])]
