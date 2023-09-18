@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Operation;
 use App\Entity\Adresse;
 use App\Entity\Kunde;
 use App\Entity\KundeAdresse;
+use App\Entity\User;
 use App\Entity\VermittlerUser;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -53,6 +54,13 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
                 $queryBuilder->leftJoin('App\Entity\Vermittler', 'v', Expr\Join::WITH, sprintf('v.id = %s.vermittlerId', $rootAlias));
                 $queryBuilder->andWhere('v.id = :vermittler_id');
                 $queryBuilder->andWhere(sprintf('%s.geloescht IS NULL OR %s.geloescht = 0', $rootAlias, $rootAlias));
+                $queryBuilder->setParameter('vermittler_id', $loggedInUser->getVermittler()->getId());
+                break;
+            case User::class === $resourceClass:
+                $rootAlias = $queryBuilder->getRootAliases()[0];
+                $queryBuilder->leftJoin('App\Entity\Kunde', 'ku', Expr\Join::WITH, sprintf('ku.id = %s.kundenid', $rootAlias));
+                $queryBuilder->andWhere('ku.geloescht IS NULL OR ku.geloescht = 0');
+                $queryBuilder->andWhere('ku.vermittlerId = :vermittler_id');
                 $queryBuilder->setParameter('vermittler_id', $loggedInUser->getVermittler()->getId());
                 break;
         }
