@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,6 +23,7 @@ class User
 
     #[ORM\Column(name: 'email', length: 200)]
     #[Assert\NotBlank]
+    #[Groups('kunde')]
     private ?string $username = null;
 
     #[ORM\Column(name: 'passwd', length: 60, nullable: true)]
@@ -31,9 +33,11 @@ class User
     private ?string $kundenid = null;
 
     #[ORM\Column(nullable: true)] // @todo can it be boolean here
+    #[Groups('kunde')]
     private ?int $aktiv = null;
 
     #[ORM\Column(name: 'last_login', type: Types::DATETIME_MUTABLE, nullable: true)] // @todo is this type correct
+    #[Groups('kunde')]
     private ?DateTimeInterface $lastLogin = null;
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]

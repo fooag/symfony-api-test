@@ -17,9 +17,11 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Table(name: 'std.tbl_kunden')]
 #[ORM\Entity(repositoryClass: KundeRepository::class)]
@@ -40,7 +42,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/kunden/{id}',
         ),
-    ]
+    ],
+    normalizationContext: ['groups' => ['kunde']],
 )]
 class Kunde
 {
@@ -61,22 +64,27 @@ class Kunde
             'required' => true,
         ]
     )]
+    #[Groups('kunde')]
     private ?string $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('kunde')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('kunde')]
     private ?string $vorname = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('kunde')]
     private ?string $firma = null;
 
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups('kunde')]
     private ?DateTimeInterface $geburtsdatum = null;
 
     #[ORM\Column(nullable: true)]
@@ -84,17 +92,27 @@ class Kunde
 
     #[ORM\Column(length: 255, nullable: true)] // @todo custom data type geschlecht ('männlich', 'weiblich', 'divers')
     #[Assert\Choice(choices: self::GESCHLECHTER)]
+    #[Groups('kunde')]
     private ?string $geschlecht = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\Email]
+    #[Groups('kunde')]
     private ?string $email = null;
 
-    #[ORM\Column(name: 'vermittler_id')]
+    #[ORM\Column(name: 'vermittler_id')] // @todo link to Vermittler Entity
     private ?int $vermittlerId = null;
 
     #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: User::class, cascade: ['persist'])]
+    #[Groups('kunde')]
     private ?User $user;
+
+    #[ORM\JoinTable(name: 'std.kunde_adresse')]
+    #[ORM\JoinColumn(name: 'kunde_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'adresse_id', referencedColumnName: 'adresse_id')]
+    #[ORM\ManyToMany(targetEntity: Adresse::class)]
+    #[Groups('kunde')]
+    private Collection $adressen;
 
     public function getId(): ?string
     {
@@ -201,5 +219,17 @@ class Kunde
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setAddressen(Collection $addressen): self
+    {
+        $this->adressen = $addressen;
+
+        return $this;
+    }
+
+    public function getAdressen(): Collection
+    {
+        return $this->adressen;
     }
 }

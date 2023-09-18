@@ -14,6 +14,7 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\AdresseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'std.adresse')]
@@ -45,24 +46,33 @@ class Adresse
             'required' => true,
         ]
     )]
+    #[Groups('kunde')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('kunde')]
     private ?string $strasse = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('kunde')]
     private ?string $plz = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]
+    #[Groups('kunde')]
     private ?string $ort = null;
 
     #[ORM\Column(length: 2, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Choice(choices: self::BUNDESLAENDER)]
+    #[Groups('kunde')]
     private ?string $bundesland = null;
+
+    #[ORM\OneToOne(mappedBy: 'adresseId', targetEntity: KundeAdresse::class)]
+    #[Groups('kunde')]
+    private ?KundeAdresse $details = null;
 
     public function getId(): ?int
     {
@@ -115,5 +125,15 @@ class Adresse
         $this->bundesland = $bundesland;
 
         return $this;
+    }
+
+    public function getDetails(): ?KundeAdresse
+    {
+        return $this->details;
+    }
+
+    public function setDetails(?KundeAdresse $details): void
+    {
+        $this->details = $details;
     }
 }

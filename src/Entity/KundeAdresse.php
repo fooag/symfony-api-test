@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\KundeAdresseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Table(name: 'std.kunde_adresse')]
 #[ORM\Entity(repositoryClass: KundeAdresseRepository::class)]
@@ -22,9 +23,11 @@ class KundeAdresse
     private Kunde $kundenId;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('kunde')]
     private ?bool $geschaeftlich = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('kunde')]
     private ?bool $rechnungsadresse = null;
 
     #[ORM\Column(nullable: false)]
