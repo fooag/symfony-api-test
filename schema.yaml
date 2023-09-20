@@ -1,0 +1,372 @@
+openapi: 3.0.0
+info:
+  title: ''
+  description: ''
+  version: 0.0.0
+servers:
+  -
+    url: /
+    description: ''
+paths:
+  /api/foo/kunden:
+    get:
+      operationId: api_fookunden_get_collection
+      tags:
+        - Kunde
+      responses:
+        200:
+          description: 'Kunde collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties:
+                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/Kunde.jsonld' } }
+                  'hydra:totalItems': { type: integer, minimum: 0 }
+                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }
+                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: string, nullable: true }, required: { type: boolean } } } } } }
+                required:
+                  - 'hydra:member'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kunde'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kunde'
+      summary: 'Retrieves the collection of Kunde resources.'
+      description: 'Retrieves the collection of Kunde resources.'
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          allowEmptyValue: true
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+          allowReserved: false
+      deprecated: false
+    post:
+      operationId: api_fookunden_post
+      tags:
+        - Kunde
+      responses:
+        201:
+          description: 'Kunde resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Kunde.jsonld'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kunde'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Kunde'
+          links: {  }
+        400:
+          description: 'Invalid input'
+        422:
+          description: 'Unprocessable entity'
+      summary: 'Creates a Kunde resource.'
+      description: 'Creates a Kunde resource.'
+      parameters: []
+      requestBody:
+        description: 'The new Kunde resource'
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Kunde.jsonld'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Kunde'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Kunde'
+        required: true
+      deprecated: false
+    parameters: []
+  '/api/foo/kunden/{id}':
+    get:
+      operationId: api_fookunden_id_get
+      tags:
+        - Kunde
+      responses:
+        200:
+          description: 'Kunde resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Kunde.jsonld'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kunde'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Kunde'
+        404:
+          description: 'Resource not found'
+      summary: 'Retrieves a Kunde resource.'
+      description: 'Retrieves a Kunde resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Kunde identifier'
+          required: true
+          deprecated: false
+          allowEmptyValue: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allowReserved: false
+      deprecated: false
+    parameters: []
+components:
+  schemas:
+    Collection:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        empty:
+          readOnly: true
+          description: 'Checks whether the collection is empty (contains no elements).'
+          type: boolean
+        keys:
+          readOnly: true
+          description: 'Gets all keys/indices of the collection.'
+          type: array
+          items:
+            type: integer
+        values:
+          readOnly: true
+          description: 'Gets all values of the collection.'
+          type: array
+          items:
+            type: string
+        iterator:
+          readOnly: true
+    Collection.jsonld:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        '@context':
+          readOnly: true
+          oneOf:
+            -
+              type: string
+            -
+              type: object
+              properties:
+                '@vocab':
+                  type: string
+                hydra:
+                  type: string
+                  enum: ['http://www.w3.org/ns/hydra/core#']
+              required:
+                - '@vocab'
+                - hydra
+              additionalProperties: true
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
+        empty:
+          readOnly: true
+          description: 'Checks whether the collection is empty (contains no elements).'
+          type: boolean
+        keys:
+          readOnly: true
+          description: 'Gets all keys/indices of the collection.'
+          type: array
+          items:
+            type: integer
+        values:
+          readOnly: true
+          description: 'Gets all values of the collection.'
+          type: array
+          items:
+            type: string
+        iterator:
+          readOnly: true
+    Kunde:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        id:
+          readOnly: true
+          type: string
+        name:
+          type: string
+        vorname:
+          type: string
+        firma:
+          type: string
+        geburtsdatum:
+          type: string
+        geschlecht:
+          type: string
+        email:
+          format: email
+          externalDocs:
+            url: 'https://schema.org/email'
+          type: string
+        user:
+          anyOf:
+            -
+              $ref: '#/components/schemas/User'
+          nullable: true
+        adressen:
+          readOnly: true
+          $ref: '#/components/schemas/Collection'
+        vermittlerId:
+          readOnly: true
+          type: integer
+        addressen:
+          writeOnly: true
+          $ref: '#/components/schemas/Collection'
+      required:
+        - name
+        - vorname
+        - firma
+        - geburtsdatum
+        - geschlecht
+        - email
+    Kunde.jsonld:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        '@context':
+          readOnly: true
+          oneOf:
+            -
+              type: string
+            -
+              type: object
+              properties:
+                '@vocab':
+                  type: string
+                hydra:
+                  type: string
+                  enum: ['http://www.w3.org/ns/hydra/core#']
+              required:
+                - '@vocab'
+                - hydra
+              additionalProperties: true
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
+        id:
+          readOnly: true
+          type: string
+        name:
+          type: string
+        vorname:
+          type: string
+        firma:
+          type: string
+        geburtsdatum:
+          type: string
+        geschlecht:
+          type: string
+        email:
+          format: email
+          externalDocs:
+            url: 'https://schema.org/email'
+          type: string
+        user:
+          anyOf:
+            -
+              $ref: '#/components/schemas/User.jsonld'
+          nullable: true
+        adressen:
+          readOnly: true
+          $ref: '#/components/schemas/Collection.jsonld'
+        vermittlerId:
+          readOnly: true
+          type: integer
+        addressen:
+          writeOnly: true
+          $ref: '#/components/schemas/Collection.jsonld'
+      required:
+        - name
+        - vorname
+        - firma
+        - geburtsdatum
+        - geschlecht
+        - email
+    User:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        email:
+          type: string
+        aktiv:
+          readOnly: true
+          type: integer
+        lastLogin:
+          readOnly: true
+          type: string
+    User.jsonld:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        '@context':
+          readOnly: true
+          oneOf:
+            -
+              type: string
+            -
+              type: object
+              properties:
+                '@vocab':
+                  type: string
+                hydra:
+                  type: string
+                  enum: ['http://www.w3.org/ns/hydra/core#']
+              required:
+                - '@vocab'
+                - hydra
+              additionalProperties: true
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
+        email:
+          type: string
+        aktiv:
+          readOnly: true
+          type: integer
+        lastLogin:
+          readOnly: true
+          type: string
+  responses: {  }
+  parameters: {  }
+  examples: {  }
+  requestBodies: {  }
+  headers: {  }
+  securitySchemes: {  }
+security: []
+tags: []
