@@ -2,37 +2,52 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Enum\SerializerGroups;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Table(name: 'std.adresse')]
 #[ORM\Entity]
+#[ApiResource(
+    operations: [
+        new Get(uriTemplate: 'adressen/{adresseId}'),
+        new GetCollection(uriTemplate: 'adressen'),
+    ],
+    normalizationContext: ['groups' => [
+        SerializerGroups::READ_COMMON,
+        SerializerGroups::READ_ADRESSE
+    ]]
+)]
 class Adresse
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(name: 'adresse_id')]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?int $adresseId = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?string $strasse = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?string $plz = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?string $ort = null;
 
     #[ORM\Column(length: 2, nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?string $bundesland = null;
 
     #[ORM\OneToOne(mappedBy: 'adresse', targetEntity: AdresseDetails::class)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private AdresseDetails $details;
 
 

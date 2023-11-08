@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\SerializerGroups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -17,14 +18,15 @@ class AdresseDetails
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Kunde::class, inversedBy: 'adressen')]
     #[ORM\JoinColumn(name: 'kunde_id', referencedColumnName: 'id')]
+    #[Groups([SerializerGroups::READ_ADRESSE])]
     private Kunde $kunde;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?bool $geschaeftlich = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?bool $rechnungsadresse = null;
 
     #[ORM\Column]

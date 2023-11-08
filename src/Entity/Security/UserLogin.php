@@ -3,6 +3,7 @@
 namespace App\Entity\Security;
 
 use App\Entity\Kunde;
+use App\Enum\SerializerGroups;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,21 +21,21 @@ class UserLogin
     private int $id;
 
     #[ORM\Column(name: 'email', length: 200, nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?string $username = null;
 
     #[ORM\Column(length: 60, nullable: true)]
     private ?string $passwd = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?bool $aktiv = null;
 
     #[Context(normalizationContext: [
         DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
     ])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['read'])]
+    #[Groups([SerializerGroups::READ_COMMON])]
     private ?DateTimeInterface $lastLogin = null;
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]
