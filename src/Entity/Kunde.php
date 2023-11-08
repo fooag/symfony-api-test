@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Security\UserLogin;
 use App\Enum\SerializerGroups;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -79,7 +80,15 @@ class Kunde
 
     public function getAdressen() : Collection
     {
-        return $this->adressen;
+        // Messy Workaround as I found no way to solve this issue in time
+        /** @var Adresse $adresse */
+        foreach($this->adressen as $adresse) {
+            if ($adresse->getDetails()->isGeloescht()) {
+                $this->adressen->removeElement($adresse);
+            }
+        }
+
+        return new ArrayCollection(array_values($this->adressen->toArray()));
     }
 
 
