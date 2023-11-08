@@ -1,6 +1,7 @@
 security:
     password_hashers:
         App\Entity\Security\VermittlerLogin: 'bcrypt'
+        App\Entity\Security\UserLogin: 'bcrypt'
     enable_authenticator_manager: true
     providers:
         users:

@@ -44,8 +44,8 @@ final class SoftDeleteExtension implements QueryCollectionExtensionInterface, Qu
                 $rootAlias = $queryBuilder->getRootAliases()[0];
 
                 //Customer deleted
-                $queryBuilder->leftJoin(Kunde::class, 'k', Expr\Join::WITH, sprintf('k.id = %s.kundenid', $rootAlias));
-                $queryBuilder->andWhere('k.geloescht != 1');
+                $queryBuilder->leftJoin(Kunde::class, 'ku', Expr\Join::WITH, sprintf('ku.id = %s.kunde', $rootAlias));
+                $queryBuilder->andWhere('ku.geloescht != 1');
                 break;
         }
     }

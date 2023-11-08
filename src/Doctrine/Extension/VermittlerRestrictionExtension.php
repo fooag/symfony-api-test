@@ -48,7 +48,7 @@ final class VermittlerRestrictionExtension implements QueryCollectionExtensionIn
                 $queryBuilder->setParameter('vermittlerId', $user->getVermittler()->getId());
                 break;
             case UserLogin::class:
-                $queryBuilder->leftJoin(Kunde::class, 'k', Expr\Join::WITH, sprintf('k.id = %s.kundenid', $rootAlias));
+                $queryBuilder->leftJoin(Kunde::class, 'k', Expr\Join::WITH, sprintf('k.id = %s.kunde', $rootAlias));
                 $queryBuilder->andWhere('k.vermittlerId = :vermittlerId');
                 $queryBuilder->setParameter('vermittlerId', $user->getVermittler()->getId());
                 break;

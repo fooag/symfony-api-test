@@ -3,15 +3,22 @@
 namespace App\Entity\Security;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Constraint\PasswordConstraint;
 use App\Entity\Kunde;
 use App\Enum\SerializerGroups;
+use App\State\UserLoginDeleteProcessor;
+use App\State\UserLoginPostProcessor;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -23,10 +30,25 @@ use Symfony\Component\Validator\Constraints;
     operations: [
         new GetCollection(uriTemplate: 'user',),
         new Get(uriTemplate: 'user/{id}'),
+        new Post(
+            uriTemplate: 'user',
+            processor: UserLoginPostProcessor::class
+        ),
+        new Delete(
+            uriTemplate: 'user/{id}',
+            processor: UserLoginDeleteProcessor::class
+        ),
+        new Put(
+            uriTemplate: 'user/{id}',
+            processor: UserLoginPostProcessor::class
+        )
     ],
     normalizationContext: ['groups' => [
         SerializerGroups::READ_COMMON,
         SerializerGroups::READ_USERLOGIN,
+    ]],
+    denormalizationContext: ['groups' => [
+        SerializerGroups::WRITE_USERLOGIN,
     ]],
 )]
 #[ApiResource(
@@ -42,17 +64,17 @@ use Symfony\Component\Validator\Constraints;
     ],
     normalizationContext: ['groups' => [
         SerializerGroups::READ_COMMON,
-    ]],
+    ]]
 )]
-class UserLogin
+class UserLogin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue(strategy: "AUTO")]
-    private int $id;
+    private ?int $id = null;
 
     #[ORM\Column(name: 'email', length: 200, nullable: true)]
-    #[Groups([SerializerGroups::READ_USERLOGIN])]
+    #[Groups([SerializerGroups::READ_USERLOGIN, SerializerGroups::WRITE_USERLOGIN])]
     #[Constraints\NotBlank]
     #[Constraints\Email]
     private ?string $username = null;
@@ -60,11 +82,12 @@ class UserLogin
     #[ORM\Column(length: 60, nullable: true)]
     #[Constraints\NotBlank]
     #[PasswordConstraint]
+    #[Groups([SerializerGroups::WRITE_USERLOGIN])]
     private ?string $passwd = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups([SerializerGroups::READ_COMMON])]
-    private ?bool $aktiv = null;
+    private ?int $aktiv = 1;
 
     #[Context(normalizationContext: [
         DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
@@ -75,17 +98,17 @@ class UserLogin
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]
     #[ORM\JoinColumn(name: 'kundenid', referencedColumnName: 'id')]
-    #[Groups([SerializerGroups::READ_USERLOGIN])]
+    #[Groups([SerializerGroups::READ_USERLOGIN, SerializerGroups::WRITE_USERLOGIN])]
     private Kunde $kunde;
 
 
-    public function getId() : int
+    public function getId() : ?int
     {
         return $this->id;
     }
 
 
-    public function setId(int $id) : void
+    public function setId(?int $id) : void
     {
         $this->id = $id;
     }
@@ -115,13 +138,13 @@ class UserLogin
     }
 
 
-    public function getAktiv() : ?bool
+    public function getAktiv() : ?int
     {
         return $this->aktiv;
     }
 
 
-    public function setAktiv(?bool $aktiv) : void
+    public function setAktiv(?int $aktiv) : void
     {
         $this->aktiv = $aktiv;
     }
@@ -148,5 +171,28 @@ class UserLogin
     public function setKunde(Kunde $kunde) : void
     {
         $this->kunde = $kunde;
+    }
+
+
+    public function getPassword() : ?string
+    {
+        return $this->getPasswd();
+    }
+
+
+    public function getRoles() : array
+    {
+        return [];
+    }
+
+
+    public function eraseCredentials()
+    {
+    }
+
+
+    public function getUserIdentifier() : string
+    {
+        return $this->getUsername();
     }
 }

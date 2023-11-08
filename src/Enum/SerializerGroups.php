@@ -17,4 +17,6 @@ class SerializerGroups
     public const READ_USERLOGIN = 'userlogin:read';
 
     public const WRITE_KUNDE = 'write:kunde';
+
+    public const WRITE_USERLOGIN = 'userlogin:write';
 }
