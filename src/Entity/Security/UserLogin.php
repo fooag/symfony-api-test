@@ -5,6 +5,7 @@ namespace App\Entity\Security;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use App\Entity\Kunde;
 use App\Enum\SerializerGroups;
 use DateTimeInterface;
@@ -23,7 +24,22 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
     ],
     normalizationContext: ['groups' => [
         SerializerGroups::READ_COMMON,
-        SerializerGroups::READ_USERLOGIN
+        SerializerGroups::READ_USERLOGIN,
+    ]],
+)]
+#[ApiResource(
+    uriTemplate: '/kunden/{id}/user',
+    operations: [
+        new Get(),
+    ],
+    uriVariables: [
+        'id' => new Link(
+            fromProperty: 'user',
+            fromClass: Kunde::class
+        ),
+    ],
+    normalizationContext: ['groups' => [
+        SerializerGroups::READ_COMMON,
     ]],
 )]
 class UserLogin

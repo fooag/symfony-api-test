@@ -34,7 +34,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
             fromClass: Kunde::class
         )
     ],
-    normalizationContext: ['groups' => [SerializerGroups::READ_COMMON]],
+    normalizationContext: ['groups' => [
+        SerializerGroups::READ_COMMON
+    ]],
 )]
 class Adresse
 {
