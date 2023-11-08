@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Enum\SerializerGroups;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Link;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Table(name: 'std.adresse')]
@@ -21,6 +22,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
         SerializerGroups::READ_COMMON,
         SerializerGroups::READ_ADRESSE
     ]]
+)]
+#[ApiResource(
+    uriTemplate: '/kunden/{id}/adressen',
+    operations: [
+        new GetCollection(),
+    ],
+    uriVariables: [
+        'id' => new Link(
+            fromProperty: 'adressen',
+            fromClass: Kunde::class
+        )
+    ],
+    normalizationContext: ['groups' => [SerializerGroups::READ_COMMON]],
 )]
 class Adresse
 {
