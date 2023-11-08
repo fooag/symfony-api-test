@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Table(name: 'std.kunde_adresse')]
 #[ORM\Entity]
@@ -19,9 +20,11 @@ class AdresseDetails
     private Kunde $kunde;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['read'])]
     private ?bool $geschaeftlich = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['read'])]
     private ?bool $rechnungsadresse = null;
 
     #[ORM\Column]

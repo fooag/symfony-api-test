@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Table(name: 'sec.user')]
@@ -19,18 +20,21 @@ class UserLogin
     private int $id;
 
     #[ORM\Column(name: 'email', length: 200, nullable: true)]
+    #[Groups(['read'])]
     private ?string $username = null;
 
     #[ORM\Column(length: 60, nullable: true)]
     private ?string $passwd = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['read'])]
     private ?bool $aktiv = null;
 
     #[Context(normalizationContext: [
         DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
     ])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['read'])]
     private ?DateTimeInterface $lastLogin = null;
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]
