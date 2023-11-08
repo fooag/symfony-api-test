@@ -3,13 +3,16 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Doctrine\Generator\UidGenerator;
 use App\Entity\Security\UserLogin;
 use App\Enum\SerializerGroups;
-use App\State\KundeProcessor;
+use App\State\KundeDeleteProcessor;
+use App\State\KundePostProcessor;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,7 +31,12 @@ use Symfony\Component\Validator\Constraints;
         new Get(uriTemplate: 'kunden/{id}',),
         new Post(
             uriTemplate: 'kunden',
-            processor: KundeProcessor::class
+            processor: KundePostProcessor::class
+        ),
+        new Put(uriTemplate: 'kunden/{id}'),
+        new Delete(
+            uriTemplate: 'kunden/{id}',
+            processor: KundeDeleteProcessor::class
         ),
     ],
     normalizationContext: ['groups' => [

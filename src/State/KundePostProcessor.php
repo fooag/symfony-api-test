@@ -2,13 +2,14 @@
 
 namespace App\State;
 
+use ApiPlatform\Metadata\DeleteOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Kunde;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class KundeProcessor implements ProcessorInterface
+class KundePostProcessor implements ProcessorInterface
 {
     private Security $security;
 
