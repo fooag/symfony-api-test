@@ -15,4 +15,6 @@ class SerializerGroups
     public const READ_ADRESSE = 'adresse:read';
 
     public const READ_USERLOGIN = 'userlogin:read';
+
+    public const WRITE_KUNDE = 'write:kunde';
 }

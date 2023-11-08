@@ -5,8 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use App\Doctrine\Generator\UidGenerator;
 use App\Entity\Security\UserLogin;
 use App\Enum\SerializerGroups;
+use App\State\KundeProcessor;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Validator\Constraints;
 
 #[ORM\Table(name: 'std.tbl_kunden')]
 #[ORM\Entity]
@@ -22,44 +26,62 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
     operations: [
         new GetCollection(uriTemplate: 'kunden',),
         new Get(uriTemplate: 'kunden/{id}',),
+        new Post(
+            uriTemplate: 'kunden',
+            processor: KundeProcessor::class
+        ),
     ],
     normalizationContext: ['groups' => [
         SerializerGroups::READ_KUNDE,
         SerializerGroups::READ_COMMON,
     ]],
+    denormalizationContext: ['groups' => [
+        SerializerGroups::WRITE_KUNDE,
+    ]],
 )]
 class Kunde
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    #[ORM\Column(length: 36)]
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\Column(length: 8)]
+    #[ORM\CustomIdGenerator(class: UidGenerator::class)]
     #[Groups([SerializerGroups::READ_COMMON])]
-    private string $id;
+    private ?string $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([SerializerGroups::READ_COMMON])]
+    #[Groups([SerializerGroups::READ_COMMON, SerializerGroups::WRITE_KUNDE])]
+    #[Constraints\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([SerializerGroups::READ_COMMON])]
+    #[Groups([SerializerGroups::READ_COMMON, SerializerGroups::WRITE_KUNDE])]
+    #[Constraints\NotBlank]
     private ?string $vorname = null;
 
-    #[Context(normalizationContext: [
-        DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
-    ])]
+    #[Context(
+        normalizationContext: [
+            DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
+        ],
+        denormalizationContext: [
+            DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
+        ]
+    )]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups([SerializerGroups::READ_COMMON])]
+    #[Groups([SerializerGroups::READ_COMMON, SerializerGroups::WRITE_KUNDE])]
+    #[Constraints\NotBlank]
     private ?DateTimeInterface $geburtsdatum = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $geloescht = null;
+    private ?int $geloescht = 0;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([SerializerGroups::READ_COMMON])]
+    #[Groups([SerializerGroups::READ_COMMON, SerializerGroups::WRITE_KUNDE])]
+    #[Constraints\Choice(choices: ['männlich', 'weiblich', 'divers'])]
     private ?string $geschlecht = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups([SerializerGroups::READ_COMMON])]
+    #[Groups([SerializerGroups::READ_COMMON, SerializerGroups::WRITE_KUNDE])]
+    #[Constraints\Email]
     private ?string $email = null;
 
     #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: UserLogin::class)]
@@ -68,7 +90,7 @@ class Kunde
 
     #[ORM\Column(name: 'vermittler_id', nullable: true)]
     #[Groups([SerializerGroups::READ_COMMON])]
-    private int $vermittlerId;
+    private ?int $vermittlerId = null;
 
     #[ORM\JoinTable(name: 'std.kunde_adresse')]
     #[ORM\JoinColumn(name: 'kunde_id', referencedColumnName: 'id')]
@@ -82,7 +104,7 @@ class Kunde
     {
         // Messy Workaround as I found no way to solve this issue in time
         /** @var Adresse $adresse */
-        foreach($this->adressen as $adresse) {
+        foreach ($this->adressen as $adresse) {
             if ($adresse->getDetails()->isGeloescht()) {
                 $this->adressen->removeElement($adresse);
             }
@@ -98,25 +120,25 @@ class Kunde
     }
 
 
-    public function getVermittlerId() : int
+    public function getVermittlerId() : ?int
     {
         return $this->vermittlerId;
     }
 
 
-    public function setVermittlerId(int $vermittlerId) : void
+    public function setVermittlerId(?int $vermittlerId) : void
     {
         $this->vermittlerId = $vermittlerId;
     }
 
 
-    public function getId() : string
+    public function getId() : ?string
     {
         return $this->id;
     }
 
 
-    public function setId(string $id) : void
+    public function setId(?string $id) : void
     {
         $this->id = $id;
     }
@@ -158,13 +180,13 @@ class Kunde
     }
 
 
-    public function getGeloescht() : ?bool
+    public function getGeloescht() : ?int
     {
         return $this->geloescht;
     }
 
 
-    public function setGeloescht(?bool $geloescht) : void
+    public function setGeloescht(?int $geloescht) : void
     {
         $this->geloescht = $geloescht;
     }
