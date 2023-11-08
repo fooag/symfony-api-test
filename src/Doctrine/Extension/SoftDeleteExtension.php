@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Operation;
 use App\Entity\Adresse;
 use App\Entity\AdresseDetails;
 use App\Entity\Kunde;
+use App\Entity\Security\UserLogin;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 
@@ -38,6 +39,14 @@ final class SoftDeleteExtension implements QueryCollectionExtensionInterface, Qu
                 // Customer deleted
                 $queryBuilder->leftJoin(Kunde::class, 'k', Expr\Join::WITH, 'ad.kunde = k.id');
                 $queryBuilder->andWhere('k.geloescht != 1');
+
+            case UserLogin::class:
+                $rootAlias = $queryBuilder->getRootAliases()[0];
+
+                //Customer deleted
+                $queryBuilder->leftJoin(Kunde::class, 'k', Expr\Join::WITH, sprintf('k.id = %s.kundenid', $rootAlias));
+                $queryBuilder->andWhere('k.geloescht != 1');
+                break;
         }
     }
 
