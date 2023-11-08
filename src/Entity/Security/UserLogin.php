@@ -2,6 +2,9 @@
 
 namespace App\Entity\Security;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Kunde;
 use App\Enum\SerializerGroups;
 use DateTimeInterface;
@@ -13,6 +16,16 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Table(name: 'sec.user')]
 #[ORM\Entity]
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: 'user',),
+        new Get(uriTemplate: 'user/{id}',),
+    ],
+    normalizationContext: ['groups' => [
+        SerializerGroups::READ_COMMON,
+        SerializerGroups::READ_USERLOGIN
+    ]],
+)]
 class UserLogin
 {
     #[ORM\Id]
@@ -40,6 +53,7 @@ class UserLogin
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]
     #[ORM\JoinColumn(name: 'kundenid', referencedColumnName: 'id')]
+    #[Groups([SerializerGroups::READ_USERLOGIN])]
     private Kunde $kunde;
 
 

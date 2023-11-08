@@ -10,4 +10,6 @@ class SerializerGroups {
     public const READ_COMMON = 'common:read';
     public const READ_KUNDE = 'kunde:read';
     public const READ_ADRESSE = 'adresse:read';
+
+    public const READ_USERLOGIN = 'userlogin:read';
 }
