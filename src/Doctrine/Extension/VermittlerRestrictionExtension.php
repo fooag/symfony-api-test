@@ -10,11 +10,21 @@ use App\Entity\Adresse;
 use App\Entity\AdresseDetails;
 use App\Entity\Kunde;
 use App\Entity\Security\UserLogin;
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bundle\SecurityBundle\Security;
+use Doctrine\ORM\Query\Expr;
 
-final class SoftDeleteExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class VermittlerRestrictionExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
+    private Security $security;
+
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
+
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []) : void
     {
         $this->addWhere($queryBuilder, $resourceClass);
@@ -24,28 +34,23 @@ final class SoftDeleteExtension implements QueryCollectionExtensionInterface, Qu
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass) : void
     {
         $rootAlias = $queryBuilder->getRootAliases()[0];
+        $user = $this->security->getUser();
 
         switch ($resourceClass) {
             case Kunde::class:
-                // Customer deleted
-                $queryBuilder->andWhere(sprintf('%s.geloescht != 1', $rootAlias));
+                $queryBuilder->andWhere(sprintf('%s.vermittlerId = :vermittlerId', $rootAlias));
+                $queryBuilder->setParameter('vermittlerId', $user->getVermittler()->getId());
                 break;
-
             case Adresse::class:
-                // Address deleted
                 $queryBuilder->leftJoin(AdresseDetails::class, 'ad', Expr\Join::WITH, sprintf('ad.adresse = %s.adresseId', $rootAlias));
-                $queryBuilder->andWhere('ad.geloescht = false');
-
-                // Customer deleted
                 $queryBuilder->leftJoin(Kunde::class, 'k', Expr\Join::WITH, 'ad.kunde = k.id');
-                $queryBuilder->andWhere('k.geloescht != 1');
+                $queryBuilder->andWhere('k.vermittlerId = :vermittlerId');
+                $queryBuilder->setParameter('vermittlerId', $user->getVermittler()->getId());
                 break;
             case UserLogin::class:
-                $rootAlias = $queryBuilder->getRootAliases()[0];
-
-                //Customer deleted
                 $queryBuilder->leftJoin(Kunde::class, 'k', Expr\Join::WITH, sprintf('k.id = %s.kundenid', $rootAlias));
-                $queryBuilder->andWhere('k.geloescht != 1');
+                $queryBuilder->andWhere('k.vermittlerId = :vermittlerId');
+                $queryBuilder->setParameter('vermittlerId', $user->getVermittler()->getId());
                 break;
         }
     }

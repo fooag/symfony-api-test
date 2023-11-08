@@ -5,10 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use App\Enum\SerializerGroups;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\Link;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Table(name: 'std.adresse')]
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     normalizationContext: ['groups' => [
         SerializerGroups::READ_COMMON,
-        SerializerGroups::READ_ADRESSE
+        SerializerGroups::READ_ADRESSE,
     ]]
 )]
 #[ApiResource(
@@ -32,10 +32,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'id' => new Link(
             fromProperty: 'adressen',
             fromClass: Kunde::class
-        )
+        ),
     ],
     normalizationContext: ['groups' => [
-        SerializerGroups::READ_COMMON
+        SerializerGroups::READ_COMMON,
     ]],
 )]
 class Adresse

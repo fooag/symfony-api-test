@@ -1,23 +1,29 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    password_hashers:
+        App\Entity\Security\VermittlerLogin: 'bcrypt'
+    enable_authenticator_manager: true
     providers:
-        users_in_memory: { memory: null }
+        users:
+            entity:
+                class: App\Entity\Security\VermittlerLogin
+                property: email
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/_(profiler|wdt)
             security: false
         main:
-            lazy: true
-            provider: users_in_memory
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+            stateless: true
+            provider: users
+            json_login:
+                check_path: auth
+                username_path: email
+                password_path: passwd
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/foo/login, roles: PUBLIC_ACCESS }
+        - { path: ^/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/foo/adressen.*, roles: ROLE_USER, methods:[GET] }
+        - { path: ^/foo/kunden.*, roles: ROLE_USER, methods:[GET] }
+        - { path: ^/foo/user.*, roles: ROLE_USER, methods:[GET] }

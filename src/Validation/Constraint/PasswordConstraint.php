@@ -3,13 +3,13 @@
 namespace App\Constraint;
 
 use Attribute;
-use Symfony\Component\Validator\Constraints\Compound;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Compound;
 
 #[Attribute]
 class PasswordConstraint extends Compound
 {
-    protected function getConstraints(array $options): array
+    protected function getConstraints(array $options) : array
     {
         return [
             new Constraints\NotBlank(),

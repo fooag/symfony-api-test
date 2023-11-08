@@ -6,12 +6,14 @@ use App\Entity\Vermittler;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Table(name: 'sec.vermittler_user')]
 #[ORM\Entity]
-class VermittlerLogin
+class VermittlerLogin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -107,5 +109,28 @@ class VermittlerLogin
     public function setVermittler(Vermittler $vermittler) : void
     {
         $this->vermittler = $vermittler;
+    }
+
+
+    public function getRoles() : array
+    {
+        return ['ROLE_USER'];
+    }
+
+
+    public function eraseCredentials()
+    {
+    }
+
+
+    public function getUserIdentifier() : string
+    {
+        return $this->email;
+    }
+
+
+    public function getPassword() : ?string
+    {
+        return $this->passwd;
     }
 }

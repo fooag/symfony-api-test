@@ -28,9 +28,6 @@ use Symfony\Component\Validator\Constraints;
         SerializerGroups::READ_COMMON,
         SerializerGroups::READ_USERLOGIN,
     ]],
-    denormalizationContext: ['groups' => [
-        SerializerGroups::WRITE_USERLOGIN,
-    ]],
 )]
 #[ApiResource(
     uriTemplate: '/kunden/{id}/user',
@@ -55,7 +52,7 @@ class UserLogin
     private int $id;
 
     #[ORM\Column(name: 'email', length: 200, nullable: true)]
-    #[Groups([SerializerGroups::READ_USERLOGIN, SerializerGroups::WRITE_USERLOGIN])]
+    #[Groups([SerializerGroups::READ_USERLOGIN])]
     #[Constraints\NotBlank]
     #[Constraints\Email]
     private ?string $username = null;
@@ -63,7 +60,6 @@ class UserLogin
     #[ORM\Column(length: 60, nullable: true)]
     #[Constraints\NotBlank]
     #[PasswordConstraint]
-    #[Groups([SerializerGroups::WRITE_USERLOGIN])]
     private ?string $passwd = null;
 
     #[ORM\Column(nullable: true)]
@@ -79,7 +75,7 @@ class UserLogin
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Kunde::class)]
     #[ORM\JoinColumn(name: 'kundenid', referencedColumnName: 'id')]
-    #[Groups([SerializerGroups::READ_USERLOGIN, SerializerGroups::WRITE_USERLOGIN])]
+    #[Groups([SerializerGroups::READ_USERLOGIN])]
     private Kunde $kunde;
 
 
