@@ -38,6 +38,7 @@ class Kunde
     private ?DateTime $geburtsdatum = null;
 
     #[ORM\Column]
+    #[API\ApiProperty(security: "false")]
     private int $geloescht = 0;
 
     #[ORM\Column]
