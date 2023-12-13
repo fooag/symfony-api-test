@@ -3,10 +3,22 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata as API;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'std.adresse')]
+#[API\ApiResource(
+    uriTemplate: '/adressen/{id}',
+    operations: [
+        new API\GetCollection(uriTemplate: '/adressen'),
+        new API\Post(uriTemplate: '/adressen'),
+        new API\Get(),
+        new API\Put(),
+        new API\Delete(),
+    ],
+    routePrefix: '/foo',
+)]
 class Adresse
 {
     #[ORM\Id, ORM\Column(name: 'adresse_id'), ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -21,7 +33,7 @@ class Adresse
     #[ORM\Column]
     private ?string $ort = null;
 
-    #[ORM\ManyToOne(targetEntity: Bundesland::class), ORM\JoinColumn(name: 'bundesland')]
+    #[ORM\ManyToOne(targetEntity: Bundesland::class), ORM\JoinColumn(name: 'bundesland', referencedColumnName: 'kuerzel')]
     private ?Bundesland $bundesland = null;
 
     public function getId(): ?string

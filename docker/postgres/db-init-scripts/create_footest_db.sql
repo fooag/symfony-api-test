@@ -23,6 +23,11 @@ CREATE DATABASE foo_intro OWNER web;
 
 CREATE EXTENSION pgcrypto;
 
+GRANT USAGE ON SCHEMA public TO web;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT INSERT, SELECT, UPDATE, DELETE, TRUNCATE ON TABLES
+    TO web;
+
 CREATE TYPE public.geschlecht AS enum ('männlich', 'weiblich', 'divers');
 
 CREATE TABLE public.bundesland (
