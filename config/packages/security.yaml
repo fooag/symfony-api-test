@@ -14,9 +14,10 @@ security:
         api:
             pattern: ^/api/foo
             stateless: true
-            provider: vermittler
             jwt: ~
         main:
+            provider: vermittler
+            user_checker: App\Security\VermittlerUserChecker
             json_login:
                 check_path: /api/auth
                 username_path: email
