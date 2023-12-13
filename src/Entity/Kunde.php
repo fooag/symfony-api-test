@@ -3,25 +3,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use DateTimeImmutable;
+use ApiPlatform\Metadata as API;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'std.tbl_kunden')]
-#[ApiResource(
+#[API\ApiResource(
     uriTemplate: '/kunden/{id}',
     operations: [
-        new GetCollection(uriTemplate: '/kunden'),
-        new Post(uriTemplate: '/kunden'),
-        new Get(),
-        new Put(),
-        new Delete(),
+        new API\GetCollection(uriTemplate: '/kunden'),
+        new API\Post(uriTemplate: '/kunden'),
+        new API\Get(),
+        new API\Put(),
+        new API\Delete(),
     ],
     routePrefix: '/foo',
 )]
@@ -40,7 +35,7 @@ class Kunde
     private ?string $firma = null;
 
     #[ORM\Column]
-    private ?DateTimeImmutable $geburtsdatum = null;
+    private ?DateTime $geburtsdatum = null;
 
     #[ORM\Column]
     private int $geloescht = 0;
@@ -50,6 +45,10 @@ class Kunde
 
     #[ORM\Column]
     private ?string $email = null;
+
+    #[ORM\ManyToOne(targetEntity: Vermittler::class)]
+    #[API\ApiProperty(security: "false")]
+    private Vermittler $vermittler;
 
     public function getId(): ?string
     {
@@ -89,12 +88,12 @@ class Kunde
         return $this;
     }
 
-    public function getGeburtsdatum(): ?DateTimeImmutable
+    public function getGeburtsdatum(): ?DateTime
     {
         return $this->geburtsdatum;
     }
 
-    public function setGeburtsdatum(?DateTimeImmutable $geburtsdatum): self
+    public function setGeburtsdatum(?DateTime $geburtsdatum): self
     {
         $this->geburtsdatum = $geburtsdatum;
         return $this;
@@ -130,6 +129,17 @@ class Kunde
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+        return $this;
+    }
+
+    public function getVermittler(): Vermittler
+    {
+        return $this->vermittler;
+    }
+
+    public function setVermittler(Vermittler $vermittler): self
+    {
+        $this->vermittler = $vermittler;
         return $this;
     }
 }

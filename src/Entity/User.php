@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTimeImmutable;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -26,7 +26,7 @@ class User
     private int $aktiv = 0;
 
     #[ORM\Column(name: 'last_login', type: 'datetime')]
-    private ?DateTimeImmutable $lastLogin = null;
+    private ?DateTime $lastLogin = null;
 
     public function getId(): ?int
     {
@@ -77,12 +77,12 @@ class User
         return $this;
     }
 
-    public function getLastLogin(): ?DateTimeImmutable
+    public function getLastLogin(): ?DateTime
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?DateTimeImmutable $lastLogin): User
+    public function setLastLogin(?DateTime $lastLogin): User
     {
         $this->lastLogin = $lastLogin;
         return $this;
