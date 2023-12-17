@@ -36,8 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     new Delete(
         controller: DeleteController::class,
         write: false
-    ),
-    new Put()
+    )
 ],
     normalizationContext: ["groups" => ["user.read"]],
     denormalizationContext: ["groups" => ["user.write"]]
@@ -74,7 +73,7 @@ class User implements PasswordAuthenticatedUserInterface, IEntity
     private ?\DateTimeInterface $lastLogin = null;
 
 
-    #[Groups(['user.read'])]
+    #[Groups(['user.write', 'user.read'])]
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(name: "kundenid", referencedColumnName:"id", nullable: true)]
     private ?Kunden $kundenid = null;

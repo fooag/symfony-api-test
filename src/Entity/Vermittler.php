@@ -16,11 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource(operations: [
     new Get(
         controller: GetController::class
-    ),
-    new Post(),
-    new Delete(
-        controller: DeleteController::class,
-        write: false
     )
 ])]
 class Vermittler

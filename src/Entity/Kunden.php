@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "std.tbl_kunden")]
 #[ORM\Entity(repositoryClass: KundenRepository::class)]
@@ -53,7 +54,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Kunden implements IEntity
 {
-    #[Groups(['kunde.read', 'kunde.write'])]
+    #[Groups(['user.write', 'kunde.read', 'kunde.write'])]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: IdGenerator::class)]
@@ -84,6 +85,9 @@ class Kunden implements IEntity
     private ?string $geschlecht = null;
 
     #[Groups(['kunde.read', 'kunde.write'])]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $email = null;
 
