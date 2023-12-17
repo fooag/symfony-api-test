@@ -95,13 +95,13 @@ class Kunden implements IEntity
     #[ORM\JoinColumn(name: "vermittler_id", nullable: false)]
     private ?Vermittler $vermittler = null;
 
-    #[Groups(['kunde.write'])]
+    #[Groups(['kunde.write', 'kunde.read'])]
     #[ORM\OneToMany(mappedBy: 'kunde', targetEntity: KundeAdresse::class)]
     private Collection $kundeAdresses;
 
+    #[Groups(['kunde.read'])]
     #[ORM\OneToMany(mappedBy: 'kundenid', targetEntity: User::class)]
     private Collection $users;
-
 
     public function __construct()
     {

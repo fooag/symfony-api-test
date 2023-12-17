@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class User implements PasswordAuthenticatedUserInterface, IEntity
 {
-    #[Groups(['user.read'])]
+    #[Groups(['user.read', 'kunde.read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy:"IDENTITY")]
     #[ORM\Column]
@@ -53,7 +53,7 @@ class User implements PasswordAuthenticatedUserInterface, IEntity
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
-    #[Groups(['user.write', 'user.read'])]
+    #[Groups(['user.write', 'user.read', 'kunde.read'])]
     #[ORM\Column(length: 200, unique: true, nullable: true)]
     private ?string $email = null;
 
@@ -64,11 +64,11 @@ class User implements PasswordAuthenticatedUserInterface, IEntity
     private ?string $passwd = null;
 
     #[Assert\NotBlank]
-    #[Groups(['user.write', 'user.read'])]
+    #[Groups(['user.write', 'user.read', 'kunde.read'])]
     #[ORM\Column(nullable: true)]
     private ?int $aktiv = null;
 
-    #[Groups(['user.read'])]
+    #[Groups(['user.read', 'kunde.read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLogin = null;
 
