@@ -41,6 +41,8 @@ class User extends AbstractModel implements IModel
         $user->setPasswd($data['passwd']);
         $user->setEmail($data['email']);
         $user->setAktiv($data['aktiv']);
+
+
         $errors = $this->validator->validate($user);
         if(count($errors) > 0) {
             throw  new BadRequestException((string) $errors);
@@ -51,6 +53,19 @@ class User extends AbstractModel implements IModel
             $user->getPasswd()
         );
         $user->setPasswd($hashedPassword);
+
+        try {
+            $kunde = $this->entityManager->getRepository(KundenEntity::class)
+                ->findByIdVermittleId($data['kundenid']['id'], $vermittleId);
+        } catch (\Throwable $exception)
+        {
+            throw new NotFoundException(sprintf('Kunde %s Not Found', $data['kundenid']['id']));
+        }
+
+
+
+        $user->setKundenid($kunde);
+
 
         $this->entityManager->persist($user);
 
@@ -66,10 +81,10 @@ class User extends AbstractModel implements IModel
     public function resolve(array $data)
     {
         $data = $this->resolver
-            ->configure('email', 'string', tru)
+            ->configure('email', 'string', false)
             ->configure('passwd', 'string', false)
             ->configure('aktiv', 'int', false)
-            ->configure('kundenid', 'string', false)
+            ->configure('kundenid', 'array', false)
             ->resolve($data);
     }
 }

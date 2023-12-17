@@ -54,7 +54,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Kunden implements IEntity
 {
-    #[Groups(['user.write', 'kunde.read', 'kunde.write'])]
+    #[Groups(['user.write','user.read', 'kunde.read', 'kunde.write'])]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: IdGenerator::class)]

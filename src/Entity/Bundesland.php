@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Bundesland
 {
-    #[Groups(['get', 'adresse.read', 'adresse.write'])]
+    #[Groups(['adresse.read', 'adresse.write'])]
     #[ORM\Id]
     #[ORM\Column(length: 2)]
     private ?string $kuerzel = null;
