@@ -73,7 +73,7 @@ class User implements PasswordAuthenticatedUserInterface, IEntity
     private ?\DateTimeInterface $lastLogin = null;
 
 
-    #[Groups(['user.write', 'user.read'])]
+    #[Groups(['user.write'])]
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(name: "kundenid", referencedColumnName:"id", nullable: true)]
     private ?Kunden $kundenid = null;

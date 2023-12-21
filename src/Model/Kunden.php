@@ -5,11 +5,9 @@ use App\Entity\Adresse;
 use App\Entity\IEntity;
 use App\Entity\KundeAdresse;
 use App\Entity\Kunden as KundenEntity;
-use App\Entity\User as UserEntity;
 use App\Entity\Vermittler;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
-use Doctrine\ORM\EntityManagerInterface;
 
 class Kunden extends AbstractModel implements IModel
 {
@@ -132,12 +130,13 @@ class Kunden extends AbstractModel implements IModel
      */
     public function getUsers(string $kundeId, string $vermittlerId): array
     {
-        $collection = $this
+        /** @var KundenEntity $kunde */
+        $kunde = $this
             ->entityManager
-            ->getRepository(UserEntity::class)
-            ->findByKundeIdVermittleId($kundeId, $vermittlerId);
+            ->getRepository(KundenEntity::class)
+            ->findByIdVermittleId($kundeId, $vermittlerId);
 
-        return $collection;
+        return $kunde->getUsers()->toArray();
     }
 
     /**
