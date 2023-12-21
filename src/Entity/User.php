@@ -72,7 +72,7 @@ class User implements PasswordAuthenticatedUserInterface, IEntity
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLogin = null;
 
-
+    //Removed user.read group in order to prevent circle reference
     #[Groups(['user.write'])]
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(name: "kundenid", referencedColumnName:"id", nullable: true)]

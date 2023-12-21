@@ -130,6 +130,7 @@ class Kunden extends AbstractModel implements IModel
      */
     public function getUsers(string $kundeId, string $vermittlerId): array
     {
+        // Use getUsers function in Kunde to retrieve the Data
         /** @var KundenEntity $kunde */
         $kunde = $this
             ->entityManager
