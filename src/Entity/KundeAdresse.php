@@ -17,11 +17,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class KundeAdresse
 {
-    #[Groups(['kunde.write'])]
+    #[Groups(['kunde.write', 'sub.adresse.read'])]
     #[ORM\Column(nullable: true, options:["default"=> false])]
     private ?bool $geschaeftlich = null;
 
-    #[Groups(['kunde.write'])]
+    #[Groups(['kunde.write', 'sub.adresse.read'])]
     #[ORM\Column(nullable: true)]
     private ?bool $rechnungsadresse = null;
 

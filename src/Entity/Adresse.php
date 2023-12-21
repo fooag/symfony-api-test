@@ -42,29 +42,29 @@ use Symfony\Component\Serializer\Annotation\Groups;
       )]
 class Adresse implements IEntity
 {
-    #[Groups(['adresse.read', 'kunde.read'])]
+    #[Groups(['sub.adresse.read', 'adresse.read', 'kunde.read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy:"IDENTITY")]
     #[ORM\Column(name: 'adresse_id')]
     private ?string $id = null;
 
-    #[Groups(['adresse.read', 'adresse.write', 'kunde.read'])]
+    #[Groups(['sub.adresse.read', 'adresse.read', 'adresse.write', 'kunde.read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $strasse = null;
 
-    #[Groups(['adresse.read', 'adresse.write', 'kunde.read'])]
+    #[Groups(['sub.adresse.read', 'adresse.read', 'adresse.write', 'kunde.read'])]
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $plz = null;
 
-    #[Groups(['adresse.read', 'adresse.write', 'kunde.read'])]
+    #[Groups(['sub.adresse.read', 'adresse.read', 'adresse.write', 'kunde.read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $ort = null;
 
-    #[Groups(['adresse.read', 'adresse.write', 'kunde.read'])]
+    #[Groups(['sub.adresse.read', 'adresse.read', 'adresse.write', 'kunde.read'])]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: "bundesland", referencedColumnName:"kuerzel", nullable: true)]
     private ?Bundesland $bundesland = null;
-
+    #[Groups(['sub.adresse.read'])]
     #[ORM\OneToMany(mappedBy: 'adresse', targetEntity: KundeAdresse::class)]
     private Collection $kundeAdresses;
 
