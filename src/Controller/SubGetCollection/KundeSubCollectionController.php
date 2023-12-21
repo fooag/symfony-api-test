@@ -41,7 +41,7 @@ class KundeSubCollectionController extends AbstractController
             $vermittlerId = $vermittlerId = $this->getVermittlerId();
             $collection =  $this->subCollectionHandler->handle($id, $vermittlerId);
 
-            return $this->format->getResponse($collection, status: Response::HTTP_OK);
+            return $this->format->getResponse($collection, status: Response::HTTP_OK, context: ['groups' =>['sub.adresse.read']]);
 
         } catch(NotFoundException $e) {
             return new JsonResponse($e->getMessage(), Response::HTTP_NOT_FOUND);
@@ -62,7 +62,7 @@ class KundeSubCollectionController extends AbstractController
             $vermittlerId = $vermittlerId = $this->getVermittlerId();
             $collection =  $this->subCollectionHandler->kundeAdresseDetailshandle($id, $adresseId, $vermittlerId);
 
-            return $this->format->getResponse($collection, status: Response::HTTP_OK);
+            return $this->format->getResponse($collection, status: Response::HTTP_OK, context: ['groups' =>['sub.adresse.read']]);
 
         } catch(NotFoundException $e) {
             return new JsonResponse($e->getMessage(), Response::HTTP_NOT_FOUND);
