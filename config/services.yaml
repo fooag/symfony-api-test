@@ -22,3 +22,22 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    format.response:
+        class: App\Service\FormatResponse\JsonFormat
+    factory.model:
+        class: App\Model\FactoryModel
+
+    kunden.sub.handler:
+        class: App\Service\Handler\KundenSubHandler
+
+    kunden.sub.get.collection:
+        class: App\Controller\GetCollection\GetCollectionController
+        arguments: [
+            '@request_stack',
+            '@kunden.sub.handler',
+            '@factory.model',
+            '@doctrine.orm.entity_manager',
+            '@format.response'
+        ]
+        public: true

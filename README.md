@@ -157,3 +157,20 @@ _Für den JWT kommt das Bundle lexik/jwt-authentication zur Anwendung._
     }
 }
 ```
+
+
+--------------------------------------------
+# Notes
+## Get Token url
+- /auth
+## Was fehlt?
+- PUT operation für alle Entitäten
+- Das JSO -Eingabe-/Ausgabeformat in der Plattform sollte verbessert werden
+- Tests fehlen noch. Ich kann es später bezahlen, wenn Sie es akzeptieren
+## Ideen zur Verbesserung
+#### Die Datenbankstruktur muss stark modifiziert werden. Ich habe versucht, nur minimale Dinge zu tun, um die Datenbankstruktur ohne viele Änderungen beizubehalten, aber es sind viele Änderungen erforderlich
+  - Beziehung zwischen Tabellen
+  - Name der Fields  
+  - Feldtypen wie gelato in einer Tabelle sind int und eine andere ist bool
+  - kunde_adresse hat keinen Primärschlüssel 
+  - ...
