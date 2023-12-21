@@ -48,6 +48,7 @@ class Adresse implements IEntity
     #[ORM\Column(name: 'adresse_id')]
     private ?string $id = null;
 
+    //add sub.adresse.read to get address details
     #[Groups(['sub.adresse.read', 'adresse.read', 'adresse.write', 'kunde.read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $strasse = null;

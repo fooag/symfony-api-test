@@ -62,6 +62,7 @@ class KundeSubCollectionController extends AbstractController
             $vermittlerId = $vermittlerId = $this->getVermittlerId();
             $collection =  $this->subCollectionHandler->kundeAdresseDetailshandle($id, $adresseId, $vermittlerId);
 
+            //add sub.adresse.read to get address details
             return $this->format->getResponse($collection, status: Response::HTTP_OK, context: ['groups' =>['sub.adresse.read']]);
 
         } catch(NotFoundException $e) {

@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class KundeAdresse
 {
+    //add sub.adresse.read to get address details
     #[Groups(['kunde.write', 'sub.adresse.read'])]
     #[ORM\Column(nullable: true, options:["default"=> false])]
     private ?bool $geschaeftlich = null;

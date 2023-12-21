@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Bundesland
 {
+    //add sub.adresse.read to get address details
     #[Groups(['adresse.read', 'adresse.write', 'kunde.read', 'sub.adresse.read'])]
     #[ORM\Id]
     #[ORM\Column(length: 2)]
