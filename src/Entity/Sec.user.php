@@ -1,63 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Std;
 
-/**
- * Sec.user
- *
- * @ORM\Table(name="sec.user", indexes={@ORM\Index(name="IDX_C235CF9CB8EEB71B", columns={"kundenid"})})
- * @ORM\Entity
- */
-class Sec.user
+#[ORM\Table(name: 'sec.user')]
+#[ORM\Index(columns: ['kundenid'], name: 'IDX_C235CF9CB8EEB71B')]
+#[ORM\Entity]
+class Secuser
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="sec.user_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'sec.user_id_seq', allocationSize: 1, initialValue: 1)]
+    private ?int $id = 0;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="string", length=200, nullable=true)
-     */
-    private $email;
+    #[ORM\Column(name: 'email', type: 'string', length: 200, nullable: true)]
+    private ?string $email = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="passwd", type="string", length=60, nullable=true)
-     */
-    private $passwd;
+    #[ORM\Column(name: 'passwd', type: 'string', length: 60, nullable: true)]
+    private ?string $passwd = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="aktiv", type="integer", nullable=true)
-     */
-    private $aktiv;
+    #[ORM\Column(name: 'aktiv', type: 'integer', nullable: true)]
+    private ?int $aktiv = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="last_login", type="datetime", nullable=true)
-     */
-    private $lastLogin;
+    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $lastLogin = null;
 
-    /**
-     * @var \Std.tblKunden
-     *
-     * @ORM\ManyToOne(targetEntity="Std.tblKunden")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="kundenid", referencedColumnName="id")
-     * })
-     */
+    #[ORM\JoinColumn(name: 'kundenid', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'Std.tblKunden')]
     private $kundenid;
 
 

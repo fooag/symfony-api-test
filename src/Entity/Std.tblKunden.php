@@ -1,85 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Std;
 
-/**
- * Std.tblKunden
- *
- * @ORM\Table(name="std.tbl_kunden", indexes={@ORM\Index(name="IDX_680E0AD091EC85B5", columns={"vermittler_id"})})
- * @ORM\Entity
- */
-class Std.tblKunden
+#[ORM\Table(name: 'std.tbl_kunden')]
+#[ORM\Index(name: 'IDX_680E0AD091EC85B5', columns: ['vermittler_id'])]
+#[ORM\Entity]
+class StdtblKunden
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="id", type="string", length=36, nullable=false, options={"default"="upper("left"((gen_random_uuid())::text, 8))"})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="std.tbl_kunden_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id = 'upper("left"((gen_random_uuid())::text, 8))';
+    #[ORM\Column(name: 'id', type: 'string', length: 36, nullable: false, options: ['default' => '"upper("left'])]
+    private string $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     */
-    private $name;
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
+    private ?string $name = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="vorname", type="string", length=255, nullable=true)
-     */
-    private $vorname;
+    #[ORM\Column(name: 'vorname', type: 'string', length: 255, nullable: true)]
+    private ?string $vorname = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="firma", type="text", nullable=true)
-     */
-    private $firma;
+    #[ORM\Column(name: 'firma', type: 'text', nullable: true)]
+    private ?string $firma = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="geburtsdatum", type="datetime", nullable=true)
-     */
-    private $geburtsdatum;
+    #[ORM\Column(name: 'geburtsdatum', type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $geburtsdatum = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="geloescht", type="integer", nullable=true)
-     */
-    private $geloescht;
+    #[ORM\Column(name: 'geloescht', type: 'integer', nullable: true)]
+    private ?int $geloescht = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="geschlecht", type="string", nullable=true)
-     */
-    private $geschlecht;
+    #[ORM\Column(name: 'geschlecht', type: 'string', nullable: true)]
+    private ?string $geschlecht = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="text", nullable=true)
-     */
-    private $email;
+    #[ORM\Column(name: 'email', type: 'text', nullable: true)]
+    private ?string $email = null;
 
-    /**
-     * @var \Std.vermittler
-     *
-     * @ORM\ManyToOne(targetEntity="Std.vermittler")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="vermittler_id", referencedColumnName="id")
-     * })
-     */
+    #[ORM\JoinColumn(name: 'vermittler_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'Std.vermittler')]
     private $vermittler;
-
-
 }

@@ -1,61 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Std.vermittler
- *
- * @ORM\Table(name="std.vermittler")
- * @ORM\Entity
- */
-class Std.vermittler
+#[ORM\Table(name: 'std.vermittler')]
+#[ORM\Entity]
+class Stdvermittler
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="std.vermittler_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'std.vermittler_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nummer", type="string", length=36, nullable=false, options={"default"="upper("left"((gen_random_uuid())::text, 8))"})
-     */
-    private $nummer = 'upper("left"((gen_random_uuid())::text, 8))';
+    #[ORM\Column(name: 'nummer', type: 'string', length: 36, nullable: false, options: ['default' => '"upper("left'])]
+    private ?string $nummer = 'upper("left"((gen_random_uuid())::text, 8))';
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="vorname", type="string", length=255, nullable=true)
-     */
-    private $vorname;
+    #[ORM\Column(name: 'vorname', type: 'string', length: 255, nullable: true)]
+    private ?string $vorname = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nachname", type="string", length=255, nullable=true)
-     */
-    private $nachname;
+    #[ORM\Column(name: 'nachname', type: 'string', length: 255, nullable: true)]
+    private ?string $nachname = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="firma", type="string", length=255, nullable=true)
-     */
-    private $firma;
+    #[ORM\Column(name: 'firma', type: 'string', length: 255, nullable: true)]
+    private ?string $firma = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="geloescht", type="boolean", nullable=false)
-     */
-    private $geloescht = false;
-
-
+    #[ORM\Column(name: 'geloescht', type: 'boolean', nullable: false)]
+    private bool $geloescht = false;
 }
