@@ -50,9 +50,11 @@ class Broker
         return $this->nummer;
     }
 
-    public function setNummer(string $nummer): void
+    public function setNummer(string $nummer): self
     {
         $this->nummer = $nummer;
+
+        return $this;
     }
 
     public function getVorname(): ?string
@@ -60,9 +62,11 @@ class Broker
         return $this->vorname;
     }
 
-    public function setVorname(?string $vorname): void
+    public function setVorname(?string $vorname): self
     {
         $this->vorname = $vorname;
+
+        return $this;
     }
 
     public function getNachname(): ?string
@@ -70,9 +74,11 @@ class Broker
         return $this->nachname;
     }
 
-    public function setNachname(?string $nachname): void
+    public function setNachname(?string $nachname): self
     {
         $this->nachname = $nachname;
+
+        return $this;
     }
 
     public function getFirma(): ?string
@@ -80,9 +86,11 @@ class Broker
         return $this->firma;
     }
 
-    public function setFirma(?string $firma): void
+    public function setFirma(?string $firma): self
     {
         $this->firma = $firma;
+
+        return $this;
     }
 
     public function isGeloescht(): bool
@@ -90,9 +98,11 @@ class Broker
         return $this->geloescht;
     }
 
-    public function setGeloescht(bool $geloescht): void
+    public function setGeloescht(bool $geloescht): self
     {
         $this->geloescht = $geloescht;
+
+        return $this;
     }
 
     public function getKunden(): Collection
@@ -100,8 +110,10 @@ class Broker
         return $this->kunden;
     }
 
-    public function setKunden(Collection $kunden): void
+    public function setKunden(Collection $kunden): self
     {
         $this->kunden = $kunden;
+
+        return $this;
     }
 }

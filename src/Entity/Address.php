@@ -40,14 +40,23 @@ class Address
         return $this->adresseId;
     }
 
+    public function setAdresseId(int $adresseId): self
+    {
+        $this->adresseId = $adresseId;
+
+        return $this;
+    }
+
     public function getStrasse(): ?string
     {
         return $this->strasse;
     }
 
-    public function setStrasse(?string $strasse): void
+    public function setStrasse(?string $strasse): self
     {
         $this->strasse = $strasse;
+
+        return $this;
     }
 
     public function getPlz(): ?string
@@ -55,9 +64,11 @@ class Address
         return $this->plz;
     }
 
-    public function setPlz(?string $plz): void
+    public function setPlz(?string $plz): self
     {
         $this->plz = $plz;
+
+        return $this;
     }
 
     public function getOrt(): ?string
@@ -65,9 +76,11 @@ class Address
         return $this->ort;
     }
 
-    public function setOrt(?string $ort): void
+    public function setOrt(?string $ort): self
     {
         $this->ort = $ort;
+
+        return $this;
     }
 
     public function getBundesland()
@@ -75,8 +88,10 @@ class Address
         return $this->bundesland;
     }
 
-    public function setBundesland($bundesland): void
+    public function setBundesland($bundesland)
     {
         $this->bundesland = $bundesland;
+
+        return $this;
     }
 }

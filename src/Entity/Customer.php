@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Doctrine\CustomerIdGenerator;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
@@ -17,7 +18,8 @@ class Customer
 {
     #[ORM\Column(name: 'id', type: 'string', length: 36, nullable: false, options: ['default' => 'upper(left((gen_random_uuid())::text, 8))'])]
     #[ORM\Id]
-    // TODO id generation
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\CustomIdGenerator(class: CustomerIdGenerator::class)]
     private ?string $id = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
@@ -59,9 +61,11 @@ class Customer
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getVorname(): ?string
@@ -69,9 +73,11 @@ class Customer
         return $this->vorname;
     }
 
-    public function setVorname(?string $vorname): void
+    public function setVorname(?string $vorname): self
     {
         $this->vorname = $vorname;
+
+        return $this;
     }
 
     public function getFirma(): ?string
@@ -79,9 +85,11 @@ class Customer
         return $this->firma;
     }
 
-    public function setFirma(?string $firma): void
+    public function setFirma(?string $firma): self
     {
         $this->firma = $firma;
+
+        return $this;
     }
 
     public function getGeburtsdatum(): ?DateTimeInterface
@@ -89,9 +97,11 @@ class Customer
         return $this->geburtsdatum;
     }
 
-    public function setGeburtsdatum(?DateTimeInterface $geburtsdatum): void
+    public function setGeburtsdatum(?DateTimeInterface $geburtsdatum): self
     {
         $this->geburtsdatum = $geburtsdatum;
+
+        return $this;
     }
 
     public function getGeloescht(): ?int
@@ -99,9 +109,11 @@ class Customer
         return $this->geloescht;
     }
 
-    public function setGeloescht(?int $geloescht): void
+    public function setGeloescht(?int $geloescht): self
     {
         $this->geloescht = $geloescht;
+
+        return $this;
     }
 
     public function getGeschlecht(): ?string
@@ -109,9 +121,11 @@ class Customer
         return $this->geschlecht;
     }
 
-    public function setGeschlecht(?string $geschlecht): void
+    public function setGeschlecht(?string $geschlecht): self
     {
         $this->geschlecht = $geschlecht;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -119,18 +133,15 @@ class Customer
         return $this->email;
     }
 
-    public function setEmail(?string $email): void
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
-    public function getVermittler(): ?Broker
+    public function getVermittlerId(): int
     {
-        return $this->vermittler;
-    }
-
-    public function setVermittler(?Broker $vermittler): void
-    {
-        $this->vermittler = $vermittler;
+        return $this->vermittler->getId();
     }
 }

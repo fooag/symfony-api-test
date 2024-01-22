@@ -44,9 +44,11 @@ class User
         return $this->email;
     }
 
-    public function setEmail(?string $email): void
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     public function getPasswd(): ?string
@@ -54,9 +56,11 @@ class User
         return $this->passwd;
     }
 
-    public function setPasswd(?string $passwd): void
+    public function setPasswd(?string $passwd): self
     {
         $this->passwd = $passwd;
+
+        return $this;
     }
 
     public function getAktiv(): ?int
@@ -64,9 +68,11 @@ class User
         return $this->aktiv;
     }
 
-    public function setAktiv(?int $aktiv): void
+    public function setAktiv(?int $aktiv): self
     {
         $this->aktiv = $aktiv;
+
+        return $this;
     }
 
     public function getLastLogin(): ?DateTimeInterface
@@ -74,9 +80,11 @@ class User
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?DateTimeInterface $lastLogin): void
+    public function setLastLogin(?DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
     }
 
     public function getKundenid()
@@ -84,8 +92,10 @@ class User
         return $this->kundenid;
     }
 
-    public function setKundenid($kundenid): void
+    public function setKundenid($kundenid)
     {
         $this->kundenid = $kundenid;
+
+        return $this;
     }
 }

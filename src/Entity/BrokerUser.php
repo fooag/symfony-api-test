@@ -42,9 +42,11 @@ class BrokerUser
         return $this->email;
     }
 
-    public function setEmail(?string $email): void
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     public function getPasswd(): ?string
@@ -52,9 +54,11 @@ class BrokerUser
         return $this->passwd;
     }
 
-    public function setPasswd(?string $passwd): void
+    public function setPasswd(?string $passwd): self
     {
         $this->passwd = $passwd;
+
+        return $this;
     }
 
     public function getAktiv(): ?int
@@ -62,9 +66,11 @@ class BrokerUser
         return $this->aktiv;
     }
 
-    public function setAktiv(?int $aktiv): void
+    public function setAktiv(?int $aktiv): self
     {
         $this->aktiv = $aktiv;
+
+        return $this;
     }
 
     public function getLastLogin(): ?DateTimeInterface
@@ -72,9 +78,11 @@ class BrokerUser
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?DateTimeInterface $lastLogin): void
+    public function setLastLogin(?DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
     }
 
     public function getVermittler()
@@ -82,8 +90,10 @@ class BrokerUser
         return $this->vermittler;
     }
 
-    public function setVermittler($vermittler): void
+    public function setVermittler($vermittler)
     {
         $this->vermittler = $vermittler;
+
+        return $this;
     }
 }
