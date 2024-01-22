@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'bundesland')]
 #[ORM\Entity]
-class Bundesland
+class County
 {
     #[ORM\Column(name: 'kuerzel', type: 'string', length: 2, nullable: false, options: ['fixed' => true])]
     #[ORM\Id]
@@ -18,4 +18,24 @@ class Bundesland
 
     #[ORM\Column(name: 'name', type: 'text', nullable: false)]
     private string $name;
+
+    public function getKuerzel(): string
+    {
+        return $this->kuerzel;
+    }
+
+    public function setKuerzel(string $kuerzel): void
+    {
+        $this->kuerzel = $kuerzel;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 }
