@@ -5,7 +5,7 @@ SHELL = /bin/bash -o pipefail
 
 cwd := $(shell pwd)
 
-COMPOSER_CMD=docker run --rm -i --tty -v $(cwd):/app composer:lts
+COMPOSER_CMD=docker run --rm -i --tty -v $(cwd):/app composer:lts --ignore-platform-reqs --no-scripts
 SYMFONY_CMD=docker compose exec php bin/console
 PHP_CS_FIXER_CMD=vendor/bin/php-cs-fixer
 PHPUNIT_CMD=docker compose exec php bin/phpunit
