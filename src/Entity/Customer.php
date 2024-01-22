@@ -9,7 +9,10 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Doctrine\CustomerIdGenerator;
+use App\State\CustomerStateProvider;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
@@ -30,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Get(
             uriTemplate: 'kunden/{id}',
+            provider: CustomerStateProvider::class
         ),
         new Put(
             uriTemplate: 'kunden/{id}',
@@ -77,7 +81,19 @@ class Customer
     #[ORM\JoinColumn(name: 'vermittler_id', referencedColumnName: 'id', nullable: true)]
     private ?Broker $vermittler = null;
 
-    public function getId(): ?string
+    private Collection $adressen;
+
+    public function __construct()
+    {
+        $this->adressen = new ArrayCollection();
+    }
+
+    public function getAdressen(): Collection
+    {
+        return $this->adressen;
+    }
+
+    public function getId(): string
     {
         return $this->id;
     }
@@ -164,5 +180,11 @@ class Customer
     public function getVermittlerId(): int
     {
         return $this->vermittler->getId();
+    }
+
+    public function setAdressen(Collection $addressCollection): self
+    {
+        $this->adressen = $addressCollection;
+        return $this;
     }
 }

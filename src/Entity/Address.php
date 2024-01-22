@@ -4,12 +4,28 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\State\AddressStateProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'std.adresse')]
 #[ORM\Index(columns: ['bundesland'], name: 'IDX_40A5D758593BEEEC')]
 #[ORM\Entity]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: 'adressen',
+            provider: AddressStateProvider::class,
+        ),
+        new Get(
+            uriTemplate: 'adresse/{id}',
+        ),
+    ],
+    security: "is_granted('ROLE_USER')",
+)]
 class Address
 {
     #[ORM\Column(name: 'adresse_id', type: 'integer', nullable: false)]
@@ -38,13 +54,6 @@ class Address
     public function getAdresseId(): int
     {
         return $this->adresseId;
-    }
-
-    public function setAdresseId(int $adresseId): self
-    {
-        $this->adresseId = $adresseId;
-
-        return $this;
     }
 
     public function getStrasse(): ?string
