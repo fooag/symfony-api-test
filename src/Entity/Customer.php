@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Doctrine\CustomerIdGenerator;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,6 +20,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'std.tbl_kunden')]
 #[ORM\Index(columns: ['vermittler_id'], name: 'IDX_680E0AD091EC85B5')]
 #[ORM\Entity]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: 'kunden',
+        ),
+        new GetCollection(
+            uriTemplate: 'kunden',
+        ),
+        new Get(
+            uriTemplate: 'kunden/{id}',
+        ),
+        new Put(
+            uriTemplate: 'kunden/{id}',
+        ),
+        new Delete(
+            uriTemplate: 'kunden/{id}',
+        ),
+    ],
+)]
 class Customer
 {
     #[ORM\Column(name: 'id', type: 'string', length: 36, nullable: false, options: ['default' => 'upper(left((gen_random_uuid())::text, 8))'])]
@@ -104,14 +129,9 @@ class Customer
         return $this;
     }
 
-    public function getGeloescht(): ?int
+    public function setGeloescht(?bool $geloescht): self
     {
-        return $this->geloescht;
-    }
-
-    public function setGeloescht(?int $geloescht): self
-    {
-        $this->geloescht = $geloescht;
+        $this->geloescht = $geloescht ? 1 : 0;
 
         return $this;
     }

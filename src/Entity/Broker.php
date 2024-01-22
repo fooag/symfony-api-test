@@ -33,7 +33,7 @@ class Broker
     #[ORM\Column(name: 'geloescht', type: 'boolean', nullable: false, options: ['default' => 'false'])]
     private bool $geloescht = false;
 
-    #[ORM\OneToMany(mappedBy: 'vermittler', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'vermittler', targetEntity: Customer::class)]
     private Collection $kunden;
 
     public function __construct() {
