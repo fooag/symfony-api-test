@@ -6,11 +6,13 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Table(name: 'sec.vermittler_user')]
 #[ORM\Index(columns: ['vermittler_id'], name: 'IDX_222EB99D91EC85B5')]
 #[ORM\Entity]
-class BrokerUser
+class BrokerUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
@@ -49,11 +51,6 @@ class BrokerUser
         return $this;
     }
 
-    public function getPasswd(): ?string
-    {
-        return $this->passwd;
-    }
-
     public function setPasswd(?string $passwd): self
     {
         $this->passwd = $passwd;
@@ -85,7 +82,7 @@ class BrokerUser
         return $this;
     }
 
-    public function getVermittler()
+    public function getVermittler(): Broker
     {
         return $this->vermittler;
     }
@@ -95,5 +92,25 @@ class BrokerUser
         $this->vermittler = $vermittler;
 
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->passwd;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getEmail();
     }
 }

@@ -12,13 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Broker
 {
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\SequenceGenerator(sequenceName: 'std.vermittler_id_seq', allocationSize: 1, initialValue: 1)]
     private int $id;
 
-    #[ORM\Column(name: 'nummer', type: 'string', length: 36, nullable: false, options: ['default' => 'upper(left((gen_random_uuid())::text, 8))'])]
+    #[ORM\Column(name: 'nummer', type: 'string', length: 36, nullable: false, options: ['default' => 'upper("left"((gen_random_uuid())::text, 8))'])]
     private string $nummer = 'upper("left"((gen_random_uuid())::text, 8))';
 
     #[ORM\Column(name: 'vorname', type: 'string', length: 255, nullable: true)]

@@ -38,10 +38,11 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: 'kunden/{id}',
         ),
     ],
+    security: "is_granted('ROLE_USER')",
 )]
 class Customer
 {
-    #[ORM\Column(name: 'id', type: 'string', length: 36, nullable: false, options: ['default' => 'upper(left((gen_random_uuid())::text, 8))'])]
+    #[ORM\Column(name: 'id', type: 'string', length: 36, nullable: false, options: ['default' => 'upper("left"((gen_random_uuid())::text, 8))'])]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "CUSTOM")]
     #[ORM\CustomIdGenerator(class: CustomerIdGenerator::class)]
@@ -73,7 +74,7 @@ class Customer
     private ?string $email = null;
 
     #[ORM\ManyToOne(targetEntity: Broker::class, inversedBy: 'kunden')]
-    #[ORM\JoinColumn(name: 'vermittler_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'vermittler_id', referencedColumnName: 'id', nullable: true)]
     private ?Broker $vermittler = null;
 
     public function getId(): ?string
