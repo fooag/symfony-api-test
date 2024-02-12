@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Common\Geschlecht;
 use App\Doctrine\UuidGenerator;
 use App\Repository\KundenRepository;
@@ -23,11 +27,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new GetCollection('/kunden'),
         new Get('/kunden/{id}'),
+        new Put('/kunden/{id}'),
+        new Delete('/kunden/{id}'),
         new Post('/kunden'),
     ],
     normalizationContext: ['groups' => ['customer:read'], 'serialize_null' => true],
     denormalizationContext: ['groups' => ['customer:write']],
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['geloescht'])]
 class Kunde
 {
     #[ORM\Id, ORM\Column(type: 'string', length: 8)]
@@ -65,7 +72,7 @@ class Kunde
 
     #[ORM\Column(type: 'integer', nullable: true)]
     #[Groups(['customer:read'])]
-    private ?bool $geloescht;
+    private ?int $geloescht = 0;
 
     #[ORM\OneToOne(mappedBy: 'kunde', targetEntity: User::class, fetch: 'EAGER')]
     #[ApiProperty("https://schema.org/User")]
@@ -152,12 +159,12 @@ class Kunde
         $this->geschlecht = $geschlecht;
     }
 
-    public function getGeloescht(): ?bool
+    public function getGeloescht(): ?int
     {
         return $this->geloescht;
     }
 
-    public function setGeloescht(?bool $geloescht): void
+    public function setGeloescht(?int $geloescht): void
     {
         $this->geloescht = $geloescht;
     }

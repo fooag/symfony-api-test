@@ -20,6 +20,10 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
                 type: attribute
+        filters:
+            soft_delete:
+                class: App\Doctrine\Filters\SoftDeleteFilter
+                enabled: true
 
 when@test:
     doctrine:
