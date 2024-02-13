@@ -15,13 +15,12 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Common\Geschlecht;
 use App\Doctrine\UuidGenerator;
-use App\Repository\KundenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: KundenRepository::class)]
+#[ORM\Entity]
 #[ORM\Table(name: "std.tbl_kunden")]
 #[ApiResource(
     operations: [
