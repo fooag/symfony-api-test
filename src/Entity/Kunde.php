@@ -80,7 +80,7 @@ class Kunde
 
     #[ORM\ManyToOne(targetEntity: Vermittler::class, inversedBy: 'kunden')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['customer:read', 'customer:write'])]
+    #[Groups(['customer:write'])]
     private ?Vermittler $vermittler = null;
 
     public function __construct()
@@ -196,6 +196,12 @@ class Kunde
     public function setVermittler(?Vermittler $vermittler): void
     {
         $this->vermittler = $vermittler;
+    }
+
+    #[Groups(['customer:read'])]
+    public function getVermittlerId(): int
+    {
+        return $this->vermittler->getId();
     }
 
     #[Groups(['customer:read'])]
